@@ -1,0 +1,15 @@
+#navbar-items-container {
+    align-items: center;
+}
+
+.navbar-items {
+    padding: 0.5rem 1rem;
+    color: #0077B6;
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+}
+
+.navbar-items img {
+    width: 1.25rem;
+}
