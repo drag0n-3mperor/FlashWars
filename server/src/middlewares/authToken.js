@@ -1,4 +1,5 @@
 /**
+ * a middleware which is
  * used for authentication of jwt token in secured routes
  */
 import { User } from "../models/user.model.js";
