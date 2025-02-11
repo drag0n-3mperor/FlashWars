@@ -9,19 +9,24 @@ const authToken = async (req, res, next) => {
   req.user = null;
   try {
     const token = req.cookies?.accessToken;
-    const authToken = await jwt.verify(
-      token,
-      process.env.JWT_ACCESS_TOKEN_SECRET,
-    );
+    console.log("Access Token from cookies:", token); // ✅ Debugging log
 
-    // update req.user if authToken is authenticated
-    req.user = await User.findById(authToken?._id).select(
-      "-password -refresh",
-    );
+    if (!token) return next(); // Skip if no token is provided
+
+    const authToken = await jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET);
+    console.log("Decoded Token:", authToken); // ✅ Debugging log
+
+    if (!authToken?._id) return next(); // Skip if invalid token
+
+    req.user = await User.findById(authToken._id).select("-password -refreshToken");
+    console.log("User Found:", req.user); // ✅ Debugging log
+
   } catch (error) {
-    console.error(error);
+    console.error("Auth error:", error);
   }
   next();
 };
+
+
 
 export default authToken;
