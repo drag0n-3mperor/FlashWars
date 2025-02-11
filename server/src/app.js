@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import flashcardRoutes from "../src/routes/flashcard.route.js"
+import userRoutes from "../src/routes/user.route.js"
 const app = express();
 
 app.use(express.static("public"));
@@ -24,4 +25,6 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/flashcards' , flashcardRoutes );
+app.use('/users',userRoutes)
 export default app;
