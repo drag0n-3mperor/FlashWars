@@ -1,7 +1,7 @@
 import { Navbar } from "./components/Navbar.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home } from "./pages/Home.jsx";
-import { FlashCard } from "./pages/FlashCard.jsx";
+import { Home } from "./pages/Home/Home.jsx";
+import { FlashCard } from "./pages/FlashCard/FlashCard.jsx";
 
 function App() {
   return (
