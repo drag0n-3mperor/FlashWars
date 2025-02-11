@@ -16,7 +16,7 @@ export function Navbar() {
           <img src="settings.svg" />
           <p>Options</p>
         </Link>
-        <Link to="/flashcards/create" className="navbar-items">
+        <Link to="/flashcards" className="navbar-items">
           <img src="add.svg" />
           <p>Create</p>
         </Link>
