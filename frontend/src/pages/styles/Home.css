@@ -2,3 +2,51 @@
     border-radius: 2.5% 2.5% 0 0;
     box-shadow: 0 -10px 10px -5px gray;
 }
+
+.error {
+    color: red;
+}
+
+.login-register-header-button button {
+    background-color: #0077B6;
+    border-radius: 0.25rem 0.25rem 0 0;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    color: white;
+}
+
+.login-register-header-button button:hover {
+    transform: scale(1.1);
+}
+
+.selected-button-login-register {
+    background-color: white !important;
+    color: #0077B6 !important;
+}
+
+.login-form-container,
+.register-form-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.login-form-container input,
+.login-form-container textarea,
+.register-form-container input,
+.register-form-container textarea {
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+}
+
+.login-form-submit-container button,
+.register-form-submit-container button {
+    background-color: #0077B6;
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    color: white;
+    cursor: pointer;
+}
