@@ -32,7 +32,7 @@ export function LoginRegister() {
           Register
         </button>
       </div>
-      <div className="login-register-form-body">
+      <div id="login-register-form-body" className="login-register-form-body">
         {isLoginForm ? <Login /> : <Register />}
       </div>
     </div>
