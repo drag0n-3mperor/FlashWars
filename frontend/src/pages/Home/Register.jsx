@@ -1,6 +1,15 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export function Register() {
+  const navigate = useNavigate();
+  const [registerInitiated, setRegisterInitiated] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpError, setOtpError] = useState("")
+  const [formData, setFormData] = useState(null);
+  const [registeredEmail, setRegisteredEmail] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -8,26 +17,98 @@ export function Register() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    console.log("Form Data:", data);
-    await fetch(`${import.meta.env.BACKEND_URL}/register`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
+  const handleRegister = async (data) => {
+    try {
+      console.log("Form Data:", data);
+      const tempFromData = new FormData();
+      tempFromData.append("username", data.username);
+      tempFromData.append("fullname", data.fullname);
+      tempFromData.append("email", data.email);
+      tempFromData.append("password", data.password);
+      setFormData(tempFromData);
+      setRegisteredEmail(data.email);
+
+      if (data.profileImage[0]) {
+        tempFromData.append("profileImage", data.profileImage[0]);
+      }
+
+      // post register form
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/register`, {
+        method: "POST",
+        body: tempFromData,
       });
+
+      const responseData = await response.json();
+      console.log(responseData.message);
+
+      if (response.ok) {
+        // set registerInitiated as true
+        setRegisterInitiated(true);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
+  const handleOtpChange = (e) => {
+    setOtp(e.target.value);
+    setOtpError("");
+  };
+
+  const handleOtpSubmit = async (e) => {
+    // handle otp submit and final verification form
+    e.preventDefault();
+    if (otp.length !== 6) {
+      setOtpError("OTP must be 6 digits");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/verify-otp`, {
+        method: "POST",
+        body: JSON.stringify({ email: registeredEmail, otp }),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+      const responseData = await response.json();
+      if (response.ok) {
+        // if otp matches navigate to profile
+        console.log("OTP verified successfully:", responseData.message);
+        navigate("users/profile");
+      } else {
+        setOtpError(responseData.message || "OTP verification failed");
+      }
+    } catch (e) {
+      console.error("Error during OTP verification:", e);
+      setOtpError("An error occurred while verifying OTP");
+    }
+  };
+
+  const handleResendOtp = async (e) => {
+    // resend otp handler
+    e.preventDefault();
+    try {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/register`, {
+      method: "POST",
+      body: formData,
+    });
+      if (response.ok) {
+        console.log("OTP resend successfully:");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
-    <div>
+    <div
+      className="register-form-container bg-white p-16 text-black"
+    >
       <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="register-form-container bg-white p-16 text-black"
+        onSubmit={handleSubmit(handleRegister)}
+        className="register-form-container"
       >
         {/* Username */}
         <div className="form-group">
@@ -82,7 +163,6 @@ export function Register() {
             id="password"
             {...register("password", {
               required: "Password is required",
-              minLength: { value: 6, message: "Password must be at least 6 characters long" },
             })}
             placeholder="Enter your password"
             autoComplete="off"
@@ -120,9 +200,39 @@ export function Register() {
 
         {/* Submit Button */}
         <div className="register-form-submit-container w-full flex gap-2 justify-end">
-          <button type="submit">Register</button>
+          <button
+            type="submit"
+            disabled={registerInitiated}
+            className={registerInitiated ? "disabled-button" : ""}
+          >
+            Register
+          </button>
         </div>
       </form>
+
+      {registerInitiated && (
+        <div>
+          {/* OTP Form */}
+          <form onSubmit={handleOtpSubmit} className="register-form-container">
+            <div className="form-group">
+              <label htmlFor="otp">Enter OTP</label>
+              <input
+                type="text"
+                id="otp"
+                value={otp}
+                onChange={handleOtpChange}
+                placeholder="Enter the 6-digit OTP"
+                maxLength="6"
+              />
+              {otpError && <span className="error">{otpError}</span>}
+            </div>
+            <div className="register-form-submit-container w-full flex gap-2 justify-end">
+              <button type="submit">Verify OTP</button>
+              <button onClick={handleResendOtp}>Resend Otp</button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
