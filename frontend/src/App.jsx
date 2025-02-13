@@ -4,6 +4,7 @@ import { Home } from "./pages/Home/Home.jsx";
 import { FlashCard } from "./pages/FlashCard/FlashCard.jsx";
 import { ShowFlashcard } from "./pages/FlashCard/ShowFlashcard.jsx";
 import UserPrivateRoute from "./components/UserPrivateRoute.jsx";
+import  Profile  from "./pages/Profile/Profile.jsx"
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
             <FlashCard />
           </UserPrivateRoute>
           }/>
+        <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/flashcards" element={<FlashCard />}></Route>
         <Route path="/flashcards/view-all" element={<ShowFlashcard />}></Route>
       </Routes>
     </BrowserRouter>
