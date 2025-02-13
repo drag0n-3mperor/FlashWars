@@ -3,6 +3,7 @@ import { sendMail } from "../utils/sendMail.js";
 import { uploadOnCloud } from "../utils/cloudinaryFileUpload.js";
 import ms from "ms";
 import path from "path";
+import jwt from "jsonwebtoken";
 
 const otpStorage = new Map(); // Temporary OTP storage
 const userStorage = new Map(); // Temporary user storage
@@ -77,7 +78,7 @@ const verify_otp_and_register = async (req, res) => {
 
     console.log(
       "File uploaded successfully on cloud. Cloud link:",
-      uploadResponse.url,
+      uploadResponse.url
     );
     const newUser = new User({
       ...userData,
@@ -98,7 +99,7 @@ const verify_otp_and_register = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true, // Prevent access to the cookie via JavaScript
-      sameSite: "None",  // Allows multisite request
+      sameSite: "None", // Allows multisite request
       maxAge: refreshTokenExpiry, // 10d expiry from .env
     });
     res.cookie("accessToken", accessToken, {
@@ -120,7 +121,7 @@ const user_login = async (req, res) => {
     }
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    
+
     if (!user) {
       return res.status(400).json({ message: "User not registered!" });
     }
@@ -139,11 +140,13 @@ const user_login = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true, // Prevent access to the cookie via JavaScript
       sameSite: "None", // Allows multisite request
+      secure: true,
       maxAge: refreshTokenExpiry, // 10d expiry from .env
     });
     res.cookie("accessToken", accessToken, {
       httpOnly: true, // Prevent access to the cookie via JavaScript
       sameSite: "None", // Allows multisite request
+      secure: true,
       maxAge: accessTokenExpiry, // 10d expiry from .env
     });
 
@@ -160,26 +163,48 @@ const user_login = async (req, res) => {
 
 const refresh_access_token = async (req, res) => {
   try {
-    const refreshToken = req.cookies?.refreshToken; // gets refresh token from cookies
+    const refreshToken = req.cookies?.refreshToken;
+    console.log("Refresh Token from cookies:", refreshToken);
+
     if (!refreshToken) {
       return res
         .status(401)
         .json({ message: "Unauthorized! No refresh token." });
     }
 
-    const decoded = jwt.verify(
-      refreshToken,
-      process.env.JWT_REFRESH_TOKEN_SECRET,
-    );
-    const user = await User.findById(decoded._id);
+    // Verify the refresh token
+    let decoded;
+    try {
+      decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET);
+      console.log("Decoded JWT:", decoded);
+    } catch (err) {
+      console.log("JWT Verification Error:", err.message);
+      return res
+        .status(403)
+        .json({ message: "Invalid or expired refresh token!" });
+    }
 
-    if (!user || user.refreshToken !== refreshToken) {
+    // Find the user in the database
+    const user = await User.findById(decoded._id);
+    if (!user) {
+      console.log("User not found");
       return res.status(403).json({ message: "Invalid refresh token!" });
     }
 
-    const accessToken = user.generateAccessToken(); // generates new access token
+    // Check if the refresh token matches the one stored in the database
+    if (user.refreshToken !== refreshToken) {
+      console.log("Token Mismatch! Stored Refresh Token:", user.refreshToken);
+      return res.status(403).json({ message: "Invalid refresh token!" });
+    }
+
+    // Generate a new access token
+    const accessToken = user.generateAccessToken();
+    console.log("New Access Token Generated");
+
+    // Send the new access token
     res.status(200).json({ accessToken });
   } catch (error) {
+    console.log("Error refreshing access token:", error.message);
     res.status(403).json({ message: "Invalid or expired refresh token!" });
   }
 };
@@ -201,10 +226,41 @@ const logout_user = async (req, res) => {
   }
 };
 
+const user_profile = async (req, res) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+    if (!refreshToken) {
+      return res.status(401).json({ message: "No refresh token provided" });
+    }
+    // Verify the refresh token
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_TOKEN_SECRET
+    );
+    // Find the user by the ID from the token
+    const user = await User.findById(decoded._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Return user profile details
+    res.status(200).json({
+      fullname: user.fullname,
+      email: user.email,
+      username: user.username,
+      avatar: user.avatar, // Assuming avatar is a URL or Cloudinary link
+      flashcardCollections: user.flashcardCollections || [],
+    });
+  } catch (error) {
+    console.error("Error retrieving user profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export {
   initiate_register,
   verify_otp_and_register,
   user_login,
   refresh_access_token,
   logout_user,
+  user_profile,
 };

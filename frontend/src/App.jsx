@@ -5,6 +5,8 @@ import { FlashCard } from "./pages/FlashCard/FlashCard.jsx";
 import { ShowFlashcard } from "./pages/FlashCard/ShowFlashcard.jsx";
 import { socket } from "./utils/socket.js";
 import { useEffect } from "react";
+import UserPrivateRoute from "./components/UserPrivateRoute.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
 
 function App() {
 
@@ -28,6 +30,22 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/home" element={<Home />}></Route>
+        <Route
+          path="/flashcards"
+          element={
+            <UserPrivateRoute>
+              <FlashCard />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <UserPrivateRoute>
+              <Profile />
+            </UserPrivateRoute>
+          }
+        ></Route>
         <Route path="/flashcards" element={<FlashCard />}></Route>
         <Route path="/flashcards/view-all" element={<ShowFlashcard />}></Route>
       </Routes>
