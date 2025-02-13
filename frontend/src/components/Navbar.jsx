@@ -29,7 +29,7 @@ export function Navbar() {
             <p>Profile</p>
           </Link>
         ) : (
-          <Link to="/#login-register-form-body" className="navbar-items">
+          <Link to="/auth" className="navbar-items">
             <img src="login.svg" />
             <p>Login</p>
           </Link>
