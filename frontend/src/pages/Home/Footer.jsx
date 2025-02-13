@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import 'font-awesome/css/font-awesome.min.css';
-
+import { useState } from 'react';
 
 const Footer = () => {
   // State for the contact form
@@ -14,7 +12,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+    <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
       <div className="container mx-auto px-6 py-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Left section */}
@@ -57,7 +55,6 @@ const Footer = () => {
               <li>Revise</li>
               <li>Combat</li>
               <li>Profile</li>
-              
             </ul>
           </div>
 
@@ -101,7 +98,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Sticky Footer Container */}
+      {/* Footer Container (non-sticky) */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-4 sm:py-6">
         <div className="container mx-auto text-center">
           <p className="text-sm sm:text-base">© FLASHWARS 2025. All rights reserved.</p>
