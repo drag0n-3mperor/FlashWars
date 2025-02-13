@@ -5,6 +5,7 @@ dotenv.config({
 
 import mongoose from "mongoose";
 import app from "./src/app.js";
+import server from "./src/socket.js";
 
 const connectDB = async () => {
   console.log(process.env.MONGODB_URI);
@@ -24,7 +25,12 @@ const connectDB = async () => {
 connectDB()
   .then(() => {
     app.listen(process.env.PORT, () => {
-      console.log(`Server started on port ${process.env.PORT}`);
+      console.log(`Express server listening on port ${process.env.PORT}`);
+    });
+  })
+  .then(() => {
+    server.listen(process.env.SOCKET_PORT, () => {
+      console.log(`Socket server listening on port ${process.env.SOCKET_PORT}`);
     });
   })
   .catch((error) => {
