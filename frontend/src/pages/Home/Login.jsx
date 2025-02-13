@@ -1,45 +1,55 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext"; // Import AuthContext hook
+import { useEffect } from "react";
 export function Login() {
   const navigate = useNavigate();
+  const { setIsAuthenticated, setUser , user} = useAuth(); // Removed unused `user`
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const onSubmit = async (data) => {
     console.log("Login Data:", data);
     try {
-      // post login form
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/users/login`,
         data,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
-      // console.log(await response.json().message);
-      if ((await response).status === 200) {
-        //navigate to profile if successful
-        navigate("/users/profile");
+      console.log(response)
+      if (response.status === 201) {
+        console.log("Full Response:", response);
+        setIsAuthenticated(true); // Update authentication state
+      
+        // Fetch user profile after login
+        const profileResponse = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/users/profile`,
+          { withCredentials: true }
+        );
+        console.log("User Profile:", profileResponse.data);
+        setUser(profileResponse.data); // Update the user in context
+      
+        // Navigate to profile page
+        navigate("/profile");
       }
+      
     } catch (e) {
-      // catch any error if it has occurred
-      console.log(e);
+      console.error("Login error:", e);
     }
   };
 
   return (
     <div>
-      {/* Login Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="login-form-container bg-white p-16 text-black"
       >
         <div className="form-group">
-          <label htmlFor="uid">Email or Username</label>
+          <label htmlFor="email">Email or Username</label>
           <input
             type="text"
             id="email"
@@ -47,7 +57,7 @@ export function Login() {
             placeholder="Enter your email"
             autoComplete="off"
           />
-          {errors.uid && <span className="error">{errors.uid.message}</span>}
+          {errors.email && <span className="error">{errors.email.message}</span>}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
