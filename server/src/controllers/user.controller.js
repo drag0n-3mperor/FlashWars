@@ -226,10 +226,41 @@ const logout_user = async (req, res) => {
   }
 };
 
+const user_profile = async (req, res) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+    if (!refreshToken) {
+      return res.status(401).json({ message: "No refresh token provided" });
+    }
+    // Verify the refresh token
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_TOKEN_SECRET
+    );
+    // Find the user by the ID from the token
+    const user = await User.findById(decoded._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Return user profile details
+    res.status(200).json({
+      fullname: user.fullname,
+      email: user.email,
+      username: user.username,
+      avatar: user.avatar, // Assuming avatar is a URL or Cloudinary link
+      flashcardCollections: user.flashcardCollections || [],
+    });
+  } catch (error) {
+    console.error("Error retrieving user profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export {
   initiate_register,
   verify_otp_and_register,
   user_login,
   refresh_access_token,
   logout_user,
+  user_profile,
 };
