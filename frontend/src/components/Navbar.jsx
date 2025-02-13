@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
-import './styles/Navbar.css';
+import "./styles/Navbar.css";
+import { useAuth } from "../context/AuthContext"; // Import AuthContext hook
 
 export function Navbar() {
+  const { isAuthenticated } = useAuth();
+
+  console.log(isAuthenticated);
   return (
     <div id="navbar" className="flex flex-row justify-between p-4 w-full">
       <div id="navbar-logo" className="text-3xl font-bold m-4 mt-0 mb-0">
@@ -20,10 +24,16 @@ export function Navbar() {
           <img src="add.svg" />
           <p>Create</p>
         </Link>
-        <Link to="/auth" className="navbar-items">
-          <img src="login.svg" />
-          <p>Login</p>
-        </Link>
+        {isAuthenticated ? (
+          <Link to="/profile" className="navbar-items">
+            <p>Profile</p>
+          </Link>
+        ) : (
+          <Link to="/auth" className="navbar-items">
+            <img src="login.svg" />
+            <p>Login</p>
+          </Link>
+        )}
       </div>
     </div>
   );

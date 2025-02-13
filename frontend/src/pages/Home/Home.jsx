@@ -1,7 +1,10 @@
+import { useAuth } from "../../context/AuthContext.jsx";
 import "../styles/Home.css";
 import { LoginRegister } from "./LoginRegister.jsx";
 
 export function Home() {
+
+  const { isAuthenticated } = useAuth();
 
   return (
     <>
@@ -21,7 +24,7 @@ export function Home() {
         </div>
         <img src="flashcards-home.svg" className="w-64" />
       </div>
-      <LoginRegister />
+      {!isAuthenticated && <LoginRegister />}
     </>
   );
 }
