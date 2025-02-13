@@ -41,3 +41,22 @@
     background-color: white !important;
     color: #0077B6 !important;
 }
+
+#flashcard-show-header {
+    align-items: center;
+}
+
+#flashcard-show-header a {
+    background-color: silver;
+    border: 1px solid black;
+    color: black;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    cursor: pointer;
+}
+
+.selected-topic-name {
+    background-color: white !important;
+    border: dotted;
+    color: blue;
+}

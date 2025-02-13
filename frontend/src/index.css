@@ -8,3 +8,8 @@ body {
 .primary-bg {
     background-color: #03045E;
 }
+
+.disabled-button {
+    cursor: not-allowed !important;
+    filter: opacity(0.5);
+}
