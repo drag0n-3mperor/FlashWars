@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import axios from "axios";
 export function Register() {
   const navigate = useNavigate();
   const [registerInitiated, setRegisterInitiated] = useState(false);
@@ -33,18 +33,18 @@ export function Register() {
       }
 
       // post register form
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/register`, {
-        method: "POST",
-        body: tempFromData,
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/register`,tempFromData, {
+        withCredentials: true,
       });
+      console.log(response)
+      // const responseData = await response.json();
+      // console.log(responseData.message);
 
-      const responseData = await response.json();
-      console.log(responseData.message);
-
-      if (response.ok) {
+      if (response.status===200) {
         // set registerInitiated as true
         setRegisterInitiated(true);
       }
+      console.log(registerInitiated)
     } catch (e) {
       console.log(e);
     }
