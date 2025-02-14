@@ -202,7 +202,11 @@ const refresh_access_token = async (req, res) => {
     console.log("New Access Token Generated");
 
     // Send the new access token
-    res.status(200).json({ accessToken });
+    res
+      .status(200)
+      .cookie("accessToken", accessToken)
+      .cookie("refreshToken", refreshToken)
+      .json({ accessToken });
   } catch (error) {
     console.log("Error refreshing access token:", error.message);
     res.status(403).json({ message: "Invalid or expired refresh token!" });
