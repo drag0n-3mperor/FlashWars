@@ -26,6 +26,8 @@ const flashcard_create = async (req, res) => {
             collection = new FlashcardCollection({ userId:userId.toString(), topic: topicSmall, FlashcardsId: [] });
             await collection.save();
             console.log("New collection created:", collection); // Log new collection
+            req.user.flashcardCollections.push(collection._id);
+            await req.user.save();
         }
 
         // Validating using the zod schema
@@ -101,14 +103,14 @@ const flashcard_view = async (req , res)=>{
         return res.status(401).json({ success: false, message: "Unauthorized: User ID missing" });
     }
 
-    const collectionIds = await FlashcardCollection.find({userId}).select('_id');
-    if(!collectionIds){
+    const collections = await FlashcardCollection.find({userId});
+    if(!collections){
         return res.status(404).json({ success: false, message: "No flashcard collection found for this user" });
     }
-    const flashcardCollectionIds = collectionIds.map(collection => collection._id); // extracting only IDs
+
     res.status(200).json({
         success:true , 
-        flashcardCollectionIds
+        collections
     });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

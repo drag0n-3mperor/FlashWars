@@ -33,11 +33,11 @@ const userSchema = new mongoose.Schema(
             trim: true,
         },
         // Array of flashcard collection IDs (references to FlashCard documents)
-        flashcardCollections: {
+        flashcardCollections: [{
             type: [Schema.Types.ObjectId],
             // ref: "FlashCard", // Uncomment and set the reference if FlashCard model exists
             default: [], // Default to an empty array
-        },
+        }],
         // Avatar field: required (stores the URL or path to the user's avatar image)
         avatar: {
             type: String,
