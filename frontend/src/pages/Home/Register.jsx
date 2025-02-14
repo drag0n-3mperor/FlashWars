@@ -70,7 +70,7 @@ export function Register() {
         { withCredentials: true }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log("OTP verified successfully");
         setIsAuthenticated(true); // Update authentication state
         navigate("/users/profile");
@@ -115,8 +115,79 @@ export function Register() {
           {errors.username && <span className="error">{errors.username.message}</span>}
         </div>
 
-        {/* Other form fields (Full Name, Email, Password, etc.) remain the same */}
+        {/* Full Name */}
+        <div className="form-group">
+          <label htmlFor="fullname">Full Name</label>
+          <input
+            type="text"
+            id="fullname"
+            {...register("fullname", { required: "Full Name is required" })}
+            placeholder="Enter your full name"
+            autoComplete="off"
+          />
+          {errors.fullname && <span className="error">{errors.fullname.message}</span>}
+        </div>
 
+        {/* Email */}
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email address" },
+            })}
+            placeholder="Enter your email"
+            autoComplete="off"
+          />
+          {errors.email && <span className="error">{errors.email.message}</span>}
+        </div>
+
+        {/* Password */}
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            {...register("password", {
+              required: "Password is required",
+            })}
+            placeholder="Enter your password"
+            autoComplete="off"
+          />
+          {errors.password && <span className="error">{errors.password.message}</span>}
+        </div>
+
+        {/* Confirm Password */}
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            {...register("confirmPassword", {
+              required: "Confirm Password is required",
+              validate: (value) => value === watch("password") || "Passwords do not match",
+            })}
+            placeholder="Confirm your password"
+            autoComplete="off"
+          />
+          {errors.confirmPassword && <span className="error">{errors.confirmPassword.message}</span>}
+        </div>
+
+        {/* Profile Image */}
+        <div className="form-group">
+          <label htmlFor="profileImage">Profile Image</label>
+          <input
+            type="file"
+            id="profileImage"
+            {...register("profileImage", { required: "Profile Image is required" })}
+            accept="image/*"
+          />
+          {errors.profileImage && <span className="error">{errors.profileImage.message}</span>}
+        </div>
+
+        {/* Submit Button */}
         <div className="register-form-submit-container w-full flex gap-2 justify-end">
           <button type="submit" disabled={registerInitiated}>
             Register

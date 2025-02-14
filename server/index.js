@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 dotenv.config({
-  path: "./.env"
+  path: "./.env",
 });
 
 import mongoose from "mongoose";
 import app from "./src/app.js";
-import server from "./src/socket.js";
+import { server } from "./src/socket.js";
 
 const connectDB = async () => {
   console.log(process.env.MONGODB_URI);

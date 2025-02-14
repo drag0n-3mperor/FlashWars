@@ -16,9 +16,9 @@ export function Navbar() {
           <img src="search.svg" />
           <p>Search</p>
         </div>
-        <Link to="/" className="navbar-items">
-          <img src="settings.svg" />
-          <p>Options</p>
+        <Link to="/combat" className="navbar-items">
+          <img src="combat.svg" />
+          <p>Combat</p>
         </Link>
         <Link to="/flashcards" className="navbar-items">
           <img src="add.svg" />
@@ -29,7 +29,7 @@ export function Navbar() {
             <p>Profile</p>
           </Link>
         ) : (
-          <Link to="/#login-register-form-body" className="navbar-items">
+          <Link to="/auth" className="navbar-items">
             <img src="login.svg" />
             <p>Login</p>
           </Link>

@@ -1,0 +1,1 @@
+export const combatTotalQuestions = 5;
