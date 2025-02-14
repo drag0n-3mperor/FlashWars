@@ -16,9 +16,9 @@ export function Navbar() {
           <img src="search.svg" />
           <p>Search</p>
         </div>
-        <Link to="/" className="navbar-items">
-          <img src="settings.svg" />
-          <p>Options</p>
+        <Link to="/combat" className="navbar-items">
+          <img src="combat.svg" />
+          <p>Combat</p>
         </Link>
         <Link to="/flashcards" className="navbar-items">
           <img src="add.svg" />

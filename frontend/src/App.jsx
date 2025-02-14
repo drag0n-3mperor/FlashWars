@@ -5,26 +5,37 @@ import { FlashCard } from "./pages/FlashCard/FlashCard.jsx";
 import { ShowFlashcard } from "./pages/FlashCard/ShowFlashcard.jsx";
 import Footer from "./pages/Home/Footer.jsx";
 import Auth from "./pages/Home/Auth.jsx";
-import { socket } from "./utils/socket.js";
+// import { socket } from "./utils/socket.js";
 import { useEffect } from "react";
 import UserPrivateRoute from "./components/UserPrivateRoute.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
+import { Combat } from "./pages/Combat/Combat.jsx";
+import { useSocket } from "./context/SocketContext.jsx";
+import { MultiPlayer } from "./pages/Combat/MultiPlayer.jsx";
+import { SinglePlayer } from "./pages/Combat/SinglePlayer.jsx";
 
 function App() {
+  const socket = useSocket();
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected!");
-    });
+    if (socket) {
+      socket.on("connect", () => {
+        console.log("Connected!");
+      });
 
-    socket.on("connect_error", err => {
-      console.log(err);
-    });
+      socket.on("connect_error", err => {
+        console.log(err);
+      });
 
-    socket.on("disconnect", () => {
-      console.log("Disconnected!");
-    });
-  }, []);
+      socket.on("join", () => {
+        console.log("searching for players");
+      });
+
+      socket.on("disconnect", () => {
+        console.log("Disconnected!");
+      });
+    }
+  }, [socket]);
 
   return (
     <BrowserRouter>
@@ -52,6 +63,9 @@ function App() {
         ></Route>
         <Route path="/flashcards" element={<FlashCard />}></Route>
         <Route path="/flashcards/view-all" element={<ShowFlashcard />}></Route>
+        <Route path="/combat" element={<Combat />}></Route>
+        <Route path="/combat/single-player" element={<SinglePlayer />}></Route>
+        <Route path="/combat/multi-player" element={<MultiPlayer />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
