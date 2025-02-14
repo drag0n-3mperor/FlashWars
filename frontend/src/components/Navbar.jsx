@@ -13,24 +13,25 @@ export function Navbar() {
       </div>
       <div id="navbar-items-container" className="flex flex-row justify-evenly">
         <div className="navbar-items">
-          <img src="search.svg" />
+          <img src="/search.svg" />
           <p>Search</p>
         </div>
         <Link to="/combat" className="navbar-items">
-          <img src="combat.svg" />
+          <img src="/combat.svg" />
           <p>Combat</p>
         </Link>
         <Link to="/flashcards" className="navbar-items">
-          <img src="add.svg" />
+          <img src="/add.svg" />
           <p>Create</p>
         </Link>
         {isAuthenticated ? (
           <Link to="/profile" className="navbar-items">
+            <img src="/profile.svg" />
             <p>Profile</p>
           </Link>
         ) : (
           <Link to="/auth" className="navbar-items">
-            <img src="login.svg" />
+            <img src="/login.svg" />
             <p>Login</p>
           </Link>
         )}
