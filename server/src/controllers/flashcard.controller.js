@@ -117,6 +117,27 @@ const flashcard_view = async (req , res)=>{
     }
 }
 
+//controller for viewing all flashcards of a collection
+const flashcard_view_of_collection = async(req,res)=>{
+    try {
+        const { flashcardCollectionId } = req.params;
+        const userId = req.user?._id;
+    if (!userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized: User ID missing" });
+    }
+    const flashcards = await Flashcard.find({ flashcardCollectionId });
+    if(!flashcards){
+        return res.status(404).json({ success: false, message: "No flashcards found for this collection" });
+    }
+    res.status(200).json({
+        success:true,
+        flashcards
+    })
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
 //editing a single flashcard
 const flashcard_edit = async (req, res) => {
     try {
@@ -206,4 +227,4 @@ const flashcard_delete = async (req, res) => {
 };
 
 
-export { flashcard_create , flashcard_view , flashcard_view_topicname , flashcard_edit , flashcard_delete };
+export { flashcard_create , flashcard_view , flashcard_view_topicname , flashcard_edit , flashcard_delete , flashcard_view_of_collection };
