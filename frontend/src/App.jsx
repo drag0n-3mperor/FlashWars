@@ -41,7 +41,6 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-
         <Route path="/" element={<Home />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/auth" element={<Auth />}></Route>
