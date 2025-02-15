@@ -1,38 +1,112 @@
-import { Link } from "react-router-dom";
-import "./styles/Navbar.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import AuthContext hook
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export function Navbar() {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
+  const [isProfilePage, setIsProfilePage] = useState(false);
+  const navigate = useNavigate();
 
-  console.log(isAuthenticated);
+  useEffect(() => {
+    console.log(location.pathname);
+    if (location.pathname === "/profile") {
+      setIsProfilePage(true);
+    } else {
+      setIsProfilePage(false);
+    }
+  }, [location]);
+
+  const handleLogout = async () => {    
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/logout`, {
+        withCredentials: true,
+      });
+      if (res.status === 201) {
+        console.log(`User logout successfully.`);
+        navigate("/home");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <div id="navbar" className="flex flex-row justify-between p-4 w-full">
-      <div id="navbar-logo" className="text-3xl font-bold m-4 mt-0 mb-0">
-        <Link to="/home">FlashWars</Link>
-      </div>
-      <div id="navbar-items-container" className="flex flex-row justify-evenly">
-        <div className="navbar-items">
-          <img src="/search.svg" />
-          <p>Search</p>
-        </div>
-        <Link to="/combat" className="navbar-items">
-          <img src="/combat.svg" />
-          <p>Combat</p>
+    <div
+      id="navbar"
+      className={`flex justify-between items-center p-4 w-full bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md rounded-b-lg shadow-gray-400`}
+    >
+      {/* Logo */}
+      <div id="navbar-logo" className="text-3xl font-bold text-white w-32">
+        <Link to="/home">
+          <img src="/title_transparent.svg" />
         </Link>
-        <Link to="/flashcards" className="navbar-items">
-          <img src="/add.svg" />
-          <p>Create</p>
+      </div>
+
+      {/* Navbar Items */}
+      <div id="navbar-items-container" className="flex gap-6">
+        <div className="flex flex-col items-center text-white hover:scale-110 transition-transform">
+          <img
+            src="/search.svg"
+            className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
+          />
+          <p className="text-sm">Search</p>
+        </div>
+        <Link
+          to="/combat"
+          className="flex flex-col items-center text-white hover:scale-110 transition-transform"
+        >
+          <img
+            src="/combat.svg"
+            className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
+          />
+          <p className="text-sm">Combat</p>
+        </Link>
+        <Link
+          to="/flashcards"
+          className="flex flex-col items-center text-white hover:scale-110 transition-transform"
+        >
+          <img
+            src="/add.svg"
+            className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
+          />
+          <p className="text-sm">Create</p>
         </Link>
         {isAuthenticated ? (
-          <Link to="/profile" className="navbar-items">
-            <img src="/profile.svg" />
-            <p>Profile</p>
-          </Link>
+          !isProfilePage ? (
+            <Link
+              to="/profile"
+              className="flex flex-col items-center text-white hover:scale-110 transition-transform"
+            >
+              <img
+                src="/profile.svg"
+                className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
+              />
+              <p className="text-sm">Profile</p>
+            </Link>
+          ) : (
+            <button
+              className="flex flex-col cursor-pointer items-center text-white hover:scale-110 transition-transform"
+              onClick={handleLogout}
+            >
+              <img
+                src="/logout.svg"
+                className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
+              />
+              <p className="text-sm">Logout</p>
+            </button>
+          )
         ) : (
-          <Link to="/auth" className="navbar-items">
-            <img src="/login.svg" />
-            <p>Login</p>
+          <Link
+            to="/auth"
+            className="flex flex-col items-center text-white hover:scale-110 transition-transform"
+          >
+            <img
+              src="/login.svg"
+              className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
+            />
+            <p className="text-sm">Login</p>
           </Link>
         )}
       </div>

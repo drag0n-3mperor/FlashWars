@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home/Home.jsx";
 import { FlashCard } from "./pages/FlashCard/FlashCard.jsx";
 import { ShowFlashcard } from "./pages/FlashCard/ShowFlashcard.jsx";
-import Footer from "./pages/Home/Footer.jsx";
+import Footer from "./components/Footer.jsx";
 import Auth from "./pages/Home/Auth.jsx";
 // import { socket } from "./utils/socket.js";
 import { useEffect } from "react";
@@ -69,7 +69,6 @@ function App() {
       </Routes>
       <Footer />
     </BrowserRouter>
-
   );
 }
 
