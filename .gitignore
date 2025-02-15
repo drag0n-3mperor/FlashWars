@@ -3,3 +3,11 @@ server/node_modules/
 .vscode/
 
 .env
+server/node_modules/.package-lock.json
+server/node_modules/.bin/color-support
+server/node_modules/.bin/node-pre-gyp
+server/node_modules/.bin/nopt
+server/node_modules/.bin/rimraf
+server/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node
+server/node_modules/make-dir/node_modules/.bin/semver
+server/node_modules/tar/node_modules/.bin/mkdirp
