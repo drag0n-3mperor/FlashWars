@@ -97,18 +97,21 @@ const verify_otp_and_register = async (req, res) => {
     const refreshTokenExpiry = ms(process.env.JWT_REFRESH_TOKEN_EXPIRY);
     const accessTokenExpiry = ms(process.env.JWT_ACCESS_TOKEN_EXPIRY);
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true, // Prevent access to the cookie via JavaScript
-      sameSite: "None", // Allows multisite request
-      maxAge: refreshTokenExpiry, // 10d expiry from .env
-    });
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true, // Prevent access to the cookie via JavaScript
-      sameSite: "None", // Allows multisite request
-      maxAge: accessTokenExpiry, // 1d expiry from .env
-    });
-
-    res.status(201).json({ message: "User created successfully" });
+    res
+      .status(201)
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true, // Prevent access to the cookie via JavaScript
+        sameSite: "None", // Allows multisite request
+        secure: true,
+        maxAge: refreshTokenExpiry, // 10d expiry from .env
+      })
+      .cookie("accessToken", accessToken, {
+        httpOnly: true, // Prevent access to the cookie via JavaScript
+        sameSite: "None", // Allows multisite request
+        secure: true,
+        maxAge: accessTokenExpiry, // 10d expiry from .env
+      })
+      .json({ message: "User created successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -137,25 +140,27 @@ const user_login = async (req, res) => {
 
     const refreshTokenExpiry = ms(process.env.JWT_REFRESH_TOKEN_EXPIRY); //converts in milliseconds
     const accessTokenExpiry = ms(process.env.JWT_ACCESS_TOKEN_EXPIRY);
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true, // Prevent access to the cookie via JavaScript
-      sameSite: "None", // Allows multisite request
-      secure: true,
-      maxAge: refreshTokenExpiry, // 10d expiry from .env
-    });
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true, // Prevent access to the cookie via JavaScript
-      sameSite: "None", // Allows multisite request
-      secure: true,
-      maxAge: accessTokenExpiry, // 10d expiry from .env
-    });
 
     // Responding with success message and tokens
-    res.status(201).json({
-      message: "User logged-in successfully",
-      accessToken,
-      refreshToken,
-    });
+    res
+      .status(201)
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true, // Prevent access to the cookie via JavaScript
+        sameSite: "None", // Allows multisite request
+        secure: true,
+        maxAge: refreshTokenExpiry, // 10d expiry from .env
+      })
+      .cookie("accessToken", accessToken, {
+        httpOnly: true, // Prevent access to the cookie via JavaScript
+        sameSite: "None", // Allows multisite request
+        secure: true,
+        maxAge: accessTokenExpiry, // 10d expiry from .env
+      })
+      .json({
+        message: "User logged-in successfully",
+        accessToken,
+        refreshToken,
+      });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -200,12 +205,24 @@ const refresh_access_token = async (req, res) => {
     // Generate a new access token
     const accessToken = user.generateAccessToken();
     console.log("New Access Token Generated");
+    const refreshTokenExpiry = ms(process.env.JWT_REFRESH_TOKEN_EXPIRY);
+    const accessTokenExpiry = ms(process.env.JWT_ACCESS_TOKEN_EXPIRY);
 
     // Send the new access token
     res
       .status(200)
-      .cookie("accessToken", accessToken)
-      .cookie("refreshToken", refreshToken)
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true, // Prevent access to the cookie via JavaScript
+        sameSite: "None", // Allows multisite request
+        secure: true,
+        maxAge: refreshTokenExpiry, // 10d expiry from .env
+      })
+      .cookie("accessToken", accessToken, {
+        httpOnly: true, // Prevent access to the cookie via JavaScript
+        sameSite: "None", // Allows multisite request
+        secure: true,
+        maxAge: accessTokenExpiry, // 10d expiry from .env
+      })
       .json({ accessToken });
   } catch (error) {
     console.log("Error refreshing access token:", error.message);
@@ -221,7 +238,7 @@ const logout_user = async (req, res) => {
     }
 
     return res
-      .status(200)
+      .status(201)
       .clearCookie("refreshToken")
       .clearCookie("accessToken")
       .json({ message: "User logout successful." });

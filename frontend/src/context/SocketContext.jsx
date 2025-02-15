@@ -10,6 +10,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
       transports: ["websocket"],
+      // autoConnect: false,
     });
     setSocket(newSocket);
 
@@ -19,9 +20,7 @@ export const SocketProvider = ({ children }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={socket}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
 

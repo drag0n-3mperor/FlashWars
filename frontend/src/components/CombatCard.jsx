@@ -6,6 +6,7 @@ export function CombatCard({ flashcard }) {
   const [inputText, setInputText] = useState("");
 
   const handleSubmit = () => {
+    // sends the answer for checking
     socket.emit("send-answer", inputText);
   };
 
@@ -13,7 +14,7 @@ export function CombatCard({ flashcard }) {
     <>
       {flashcard ? (
         <div className="flex flex-col gap-4 p-4 m-2 w-48 h-48 bg-[#f4fbce] text-[#706a6a] rounded-lg shadow-md">
-          <p className="text-sm">{flashcard.content}</p>
+          <p className="text-sm">{flashcard.question}</p>
           <div>
             {/* <button className="answer-select-button" id="1-answer-select-button">
           {flashcard.answer}
