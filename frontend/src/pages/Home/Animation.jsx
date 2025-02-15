@@ -1,12 +1,36 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const flashcards = [
-  { id: 1, text: 'Volume of a Cone', status: 'Study Again', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Cone.svg/1200px-Cone.svg.png' },
-  { id: 2, text: 'Area of a Circle', status: 'Got It', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Circle_-_black_simple.svg/768px-Circle_-_black_simple.svg.png' },
-  { id: 3, text: 'Pythagorean Theorem', status: 'Study Again', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Pythagorean.svg/1200px-Pythagorean.svg.png' },
-  { id: 4, text: 'Quadratic Formula', status: 'Got It', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Quadratic_equation.svg/1200px-Quadratic_equation.svg.png' },
+  {
+    id: 1,
+    text: "Volume of a Cone",
+    status: "Study Again",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/5/56/Cone_surface_area.svg",
+  },
+  {
+    id: 2,
+    text: "Area of a Circle",
+    status: "Got It",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/c/ce/Circle_Area.svg",
+  },
+  {
+    id: 3,
+    text: "Pythagorean Theorem",
+    status: "Study Again",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/0/03/Einstein-trigonometric-proof.svg",
+  },
+  {
+    id: 4,
+    text: "Quadratic Formula",
+    status: "Got It",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/c/c4/Quadratic_formula.svg",
+  },
 ];
 
 export function Animation() {
@@ -21,14 +45,17 @@ export function Animation() {
   }, []);
 
   return (
-    <div className="bg-purple-100 min-h-screen flex items-center justify-center p-6 font-roboto">
+    <div className="min-h-screen flex items-center justify-center p-6 font-roboto">
       <div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-8 max-w-screen-md w-[70%]">
         <div className="w-full text-center lg:text-left mb-8 lg:mb-0">
           <h1 className="text-4xl font-extrabold mb-4 text-black">
             The easiest way to make and study flashcards
           </h1>
           <p className="text-lg text-gray-700 mb-6">
-            A better way to study with flashcards is here. Quizlet makes it simple to create your own flashcards, study those of a classmate, or search our archive of millions of flashcard decks from other students.
+            A better way to study with flashcards is here. Quizlet makes it
+            simple to create your own flashcards, study those of a classmate, or
+            search our archive of millions of flashcard decks from other
+            students.
           </p>
           <div className="space-y-4">
             <div className="flex items-center">
@@ -46,7 +73,9 @@ export function Animation() {
               </div>
               <div>
                 <p className="font-bold">90% of students</p>
-                <p className="text-gray-600">who use Quizlet report receiving higher grades</p>
+                <p className="text-gray-600">
+                  who use Quizlet report receiving higher grades
+                </p>
               </div>
             </div>
             <div className="flex items-center">
@@ -60,8 +89,11 @@ export function Animation() {
             </div>
           </div>
           <div className="mt-6">
-            <Link to="/flashcards" className="mt-16 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700">
-                Create a flashcard set
+            <Link
+              to="/flashcards"
+              className="mt-16 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700"
+            >
+              Create a flashcard set
             </Link>
           </div>
         </div>
@@ -69,24 +101,40 @@ export function Animation() {
           <div className="absolute inset-0 bg-green-100 rounded-lg transform rotate-3 shadow-lg"></div>
           <div className="absolute inset-0 bg-white rounded-lg transform -rotate-3 shadow-lg"></div>
           <AnimatePresence>
-            {flashcards.map((card, index) => (
-              index === currentIndex && (
-                <motion.div
-                  key={card.id}
-                  initial={{ x: card.status === 'Study Again' ? 300 : -300, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: card.status === 'Study Again' ? -300 : 300, opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className={`absolute inset-0 bg-white rounded-lg shadow-2xl flex flex-col items-center justify-center border-2 ${card.status === 'Study Again' ? 'border-orange-300' : 'border-green-300'} p-6 text-center`}
-                >
-                  <div className={`text-white font-bold px-3 py-1 rounded-full mb-3 ${card.status === 'Study Again' ? 'bg-orange-400' : 'bg-green-400'}`}>
-                    {card.status}
-                  </div>
-                  <img src={card.imageUrl} alt={card.text} className="h-24 w-24 mb-3" />
-                  <p className="text-lg font-semibold text-gray-800">{card.text}</p>
-                </motion.div>
-              )
-            ))}
+            {flashcards.map(
+              (card, index) =>
+                index === currentIndex && (
+                  <motion.div
+                    key={card.id}
+                    initial={{
+                      x: card.status === "Study Again" ? 300 : -300,
+                      opacity: 0,
+                    }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{
+                      x: card.status === "Study Again" ? -300 : 300,
+                      opacity: 0,
+                    }}
+                    transition={{ duration: 0.5 }}
+                    className={`absolute inset-0 bg-white rounded-lg shadow-2xl flex flex-col items-center justify-center border-2 ${card.status === "Study Again" ? "border-orange-300" : "border-green-300"} p-6 text-center`}
+                  >
+                    <div
+                      className={`text-white font-bold px-3 py-1 rounded-full mb-3 ${card.status === "Study Again" ? "bg-orange-400" : "bg-green-400"}`}
+                    >
+                      {card.status}
+                    </div>
+                    {console.log(card.imageUrl)}
+                    <img
+                      src={card.imageUrl}
+                      alt={card.text}
+                      className="h-24 w-24 mb-3"
+                    />
+                    <p className="text-lg font-semibold text-gray-800">
+                      {card.text}
+                    </p>
+                  </motion.div>
+                )
+            )}
           </AnimatePresence>
         </div>
       </div>

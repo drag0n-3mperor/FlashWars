@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const Footer = () => {
   // State for the contact form
-  const [email, setEmail] = useState('Bhupendra@doe.com');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState("Bhupendra@doe.com");
+  const [message, setMessage] = useState("");
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Message Sent!');
+    alert("Message Sent!");
   };
 
   return (
@@ -19,15 +19,16 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <img
               alt="Logo"
-              className="mb-4"
-              height="80"
-              src="https://storage.googleapis.com/a1aa/image/CEbrVMJQWTLfDzzB4tXuG0HAmXL28WwDRGVAHEoSrPk.jpg"
-              width="80"
+              src="/title_transparent.svg"
+              className="w-36 m-4"
             />
             <p className="text-center mb-2 text-sm sm:text-base">
-              Empowering students with opportunities. Join the journey of innovation and learning.
+              Empowering students with opportunities. Join the journey of
+              innovation and learning.
             </p>
-            <p className="text-center mb-2 text-sm sm:text-base">© Flashwars 2025. All rights reserved.</p>
+            <p className="text-center mb-2 text-sm sm:text-base">
+              © Flashwars 2025. All rights reserved.
+            </p>
             <div className="flex space-x-3">
               <a className="text-white" href="#">
                 <i className="fab fa-github"></i>
@@ -46,7 +47,10 @@ const Footer = () => {
 
           {/* Archives section */}
           <div className="bg-gray-800 bg-opacity-50 p-4 rounded-lg">
-            <h2 className="text-lg font-bold mb-3 sm:text-xl" style={{ color: '#d4a5ff' }}>
+            <h2
+              className="text-lg font-bold mb-3 sm:text-xl"
+              style={{ color: "#d4a5ff" }}
+            >
               Quick Link
             </h2>
             <ul className="space-y-1 text-xs sm:text-sm">
@@ -63,7 +67,10 @@ const Footer = () => {
             <h2 className="text-lg font-bold mb-3 sm:text-xl">Contact Us</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="block text-xs mb-1 sm:text-sm" htmlFor="email">
+                <label
+                  className="block text-xs mb-1 sm:text-sm"
+                  htmlFor="email"
+                >
                   Your Email
                 </label>
                 <input
@@ -75,7 +82,10 @@ const Footer = () => {
                 />
               </div>
               <div className="mb-3">
-                <label className="block text-xs mb-1 sm:text-sm" htmlFor="message">
+                <label
+                  className="block text-xs mb-1 sm:text-sm"
+                  htmlFor="message"
+                >
                   Message
                 </label>
                 <textarea
@@ -101,7 +111,9 @@ const Footer = () => {
       {/* Footer Container (non-sticky) */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-4 sm:py-6">
         <div className="container mx-auto text-center">
-          <p className="text-sm sm:text-base">© FLASHWARS 2025. All rights reserved.</p>
+          <p className="text-sm sm:text-base">
+            © FLASHWARS 2025. All rights reserved.
+          </p>
         </div>
       </div>
     </div>
