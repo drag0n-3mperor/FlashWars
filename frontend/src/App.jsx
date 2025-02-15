@@ -12,7 +12,8 @@ import Profile from "./pages/Profile/Profile.jsx";
 import { Combat } from "./pages/Combat/Combat.jsx";
 import { useSocket } from "./context/SocketContext.jsx";
 import { MultiPlayer } from "./pages/Combat/MultiPlayer.jsx";
-import { SinglePlayer } from "./pages/Combat/SinglePlayer.jsx";
+// import { SinglePlayer } from "./pages/Combat/SinglePlayer.jsx";
+import FlipTileGame from "./pages/Combat/FlipTileGame.jsx";
 
 function App() {
   const socket = useSocket();
@@ -63,7 +64,7 @@ function App() {
         <Route path="/flashcards" element={<FlashCard />}></Route>
         <Route path="/flashcards/view-all" element={<ShowFlashcard />}></Route>
         <Route path="/combat" element={<Combat />}></Route>
-        <Route path="/combat/single-player" element={<SinglePlayer />}></Route>
+        <Route path="/combat/single-player" element={<FlipTileGame />}></Route>
         <Route path="/combat/multi-player" element={<MultiPlayer />}></Route>
       </Routes>
       <Footer />
