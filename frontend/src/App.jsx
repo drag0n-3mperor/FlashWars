@@ -16,6 +16,7 @@ import { MultiPlayer } from "./pages/Combat/MultiPlayer.jsx";
 import FlipTileGame from "./pages/Combat/FlipTileGame.jsx";
 import ReviseFlashcard from "./pages/FlashCard/ReviseFlashcard";
 import { ShowFlashcardCollection } from "./pages/FlashCard/ShowFlashcardCollection.jsx";
+import { Search } from "./pages/Search/Search.jsx";
 
 function App() {
   const socket = useSocket();
@@ -67,12 +68,13 @@ function App() {
         <Route path="/flashcards/view" element={<ShowAllFlashcard />}></Route>
         <Route path="/flashcards/revise" element={<ReviseFlashcard />}></Route>
         <Route
-          path="/flashcards/view/:topicName"
+          path="/flashcards/view/:collectionId"
           element={<ShowFlashcardCollection />}
         ></Route>
         <Route path="/games" element={<Combat />}></Route>
         <Route path="/games/single-player" element={<FlipTileGame />}></Route>
         <Route path="/games/multi-player" element={<MultiPlayer />}></Route>
+        <Route path="/search-flashcards/:searchQuery" element={<Search />} />
       </Routes>
       <Footer />
     </BrowserRouter>

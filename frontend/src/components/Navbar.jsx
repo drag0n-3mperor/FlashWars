@@ -51,7 +51,9 @@ export function Navbar() {
     // Clean up the event listener on unmount
     return () => mediaQuery.removeEventListener("change", handleResize);
   }, []);
-
+const handleSearch = (searchQuery)=>{
+  navigate(`/search-flashcards/${searchQuery}`);
+}
   return (
     <div className="relative">
       {/* Navbar */}
@@ -67,7 +69,6 @@ export function Navbar() {
         <div
           className="text-white cursor-pointer md:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
-          
         >
           <img src="/menu.svg" className="w-6 h-6" alt="Menu" />
         </div>
@@ -76,14 +77,22 @@ export function Navbar() {
         <div className="hidden md:flex gap-6 items-center">
           {/* Search Field */}
           {showSearch && (
-            <input
-              ref={searchInputRef}
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-gray-100 p-2 border border-gray-300 rounded-md focus:outline-none"
-            />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(); // Prevent page reload
+                handleSearch(searchQuery);
+              }}
+              className="w-full"
+            >
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-gray-100 p-2 border border-gray-300 rounded-md focus:outline-none"
+              />
+            </form>
           )}
           {/* Search Icon */}
           <div
