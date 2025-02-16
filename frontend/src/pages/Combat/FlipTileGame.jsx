@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 export default function FlipTileGame() {
   const [tiles, setTiles] = useState([]);
@@ -8,33 +9,60 @@ export default function FlipTileGame() {
   const [flipCount, setFlipCount] = useState(0);
   const [time, setTime] = useState(0);
   const [hoverIndex, setHoverIndex] = useState(null);
+  const [questionMap, setQuestionMap] = useState(new Map());
+  const [play, setPlay] = useState(false);
 
   useEffect(() => {
-    const tileValues = Array.from({ length: 8 }, (_, i) => i + 1);
-    const pairs = [...tileValues, ...tileValues];
-    const shuffledTiles = pairs.sort(() => Math.random() - 0.5);
-    setTiles(shuffledTiles);
-  }, []);
+    if (!play) return;
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime((prev) => prev + 1), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/flashcards/show/`,
+          {
+            params: { limit: 8 },
+            withCredentials: true,
+          }
+        );
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 10;
-    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+        if (!res?.data?.flashcards) return;
+
+        const newQuestionMap = new Map();
+        let pairs = [];
+
+        res.data.flashcards.forEach((e) => {
+          newQuestionMap.set(e.question, e.answer);
+          newQuestionMap.set(e.answer, e.question);
+          pairs.push(e.question, e.answer);
+        });
+
+        setQuestionMap(newQuestionMap);
+        setTiles(shuffleArray(pairs));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchData();
+    const timerId = setInterval(() => setTime((prev) => prev + 1), 1000);
+    return () => clearInterval(timerId);
+  }, [play]);
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
   };
 
   const handleFlip = (index) => {
     if (
+      flipped.includes(index) ||
       flipped.length === 2 ||
-      matched.includes(index) ||
-      flipped.includes(index)
+      matched.includes(index)
     )
       return;
-
     setFlipped((prev) => [...prev, index]);
     setFlipCount((prev) => prev + 1);
   };
@@ -42,60 +70,75 @@ export default function FlipTileGame() {
   useEffect(() => {
     if (flipped.length === 2) {
       const [first, second] = flipped;
-      if (tiles[first] === tiles[second]) {
-        setTimeout(() => {
-          setMatched((prev) => [...prev, first, second]);
-        }, 500);
+      if (questionMap.get(tiles[first]) === tiles[second]) {
+        setTimeout(() => setMatched((prev) => [...prev, first, second]), 500);
       }
       setTimeout(() => setFlipped([]), 1000);
     }
-  }, [flipped, tiles]);
-
-  const isRevealed = (index) =>
-    flipped.includes(index) || matched.includes(index);
+  }, [flipped, questionMap, tiles]);
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-br">
-      <div className="grid max-w-fit grid-rows-[auto,1fr] gap-4">
-        <div className="flex justify-between p-4 text-xl text-[#2b7fff] font-bold">
-          <div>Time: {formatTime(time)}</div>
-          <div>Flips: {flipCount}</div>
-        </div>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-200 to-purple-400 p-4">
+      {!play ? (
+        <motion.button
+          onClick={() => setPlay(true)}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg shadow-lg text-xl font-bold transition-all duration-300 hover:shadow-xl"
+        >
+          Play
+        </motion.button>
+      ) : (
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex justify-between w-full max-w-md text-xl font-bold text-white">
+            <div>
+              Time: {Math.floor(time / 60)}:
+              {(time % 60).toString().padStart(2, "0")}
+            </div>
+            <div>Flips: {flipCount}</div>
+          </div>
 
-        <div className="grid grid-cols-4 gap-4">
-          {tiles.map((tile, index) => (
-            <motion.div
-              key={index}
-              initial={{ scale: 1 }}
-              animate={{
-                scale: isRevealed(index) || hoverIndex === index ? 1.1 : 1,
-                opacity: matched.includes(index) ? 0 : 1,
-                x: matched.includes(index) ? [0, -50, 50, 0] : 0,
-                y: matched.includes(index) ? [0, -50, 50, 0] : 0,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 150,
-                damping: 20,
-                duration: matched.includes(index) ? 0.6 : 0.3,
-              }}
-              className="flex justify-center items-center p-4 w-24 h-24 bg-gradient-to-br from-[#f4fbce] to-[#d6e8a7] text-[#333] rounded-lg shadow-lg transition-all duration-300 cursor-pointer border-2 border-[#c7d49a]"
-              onClick={() => handleFlip(index)}
-              onMouseEnter={() => setHoverIndex(index)}
-              onMouseLeave={() => setHoverIndex(null)}
-            >
-              {isRevealed(index) && !matched.includes(index) ? (
-                <>
-                  <h3 className="text-xl font-extrabold text-[#2b7fff] uppercase tracking-wide">
+          {matched.length === tiles.length && (
+            <h2 className="text-3xl font-bold text-green-500 animate-pulse">
+              🎉 You Win! 🎉
+            </h2>
+          )}
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {tiles.map((tile, index) => (
+              <motion.div
+                key={index}
+                initial={{ scale: 1 }}
+                animate={{
+                  scale:
+                    flipped.includes(index) ||
+                    matched.includes(index) ||
+                    hoverIndex === index
+                      ? 1.1
+                      : 1,
+                  opacity: matched.includes(index) ? 0 : 1,
+                }}
+                transition={{ type: "spring", stiffness: 150, damping: 20 }}
+                className="flex justify-center text-[0.8rem] items-center p-4 w-36 h-28 bg-gradient-to-br from-yellow-300 to-orange-400 text-gray-900 rounded-lg shadow-xl cursor-pointer border-4 border-yellow-500 font-extralight text-lg hover:shadow-2xl"
+                onClick={() => handleFlip(index)}
+                onMouseEnter={() => setHoverIndex(index)}
+                onMouseLeave={() => setHoverIndex(null)}
+              >
+                {flipped.includes(index) || matched.includes(index) ? (
+                  <motion.h3
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-gray-800 text-center"
+                  >
                     {tile}
-                  </h3>
-                  <div className="w-6 h-1 bg-[#2b7fff] rounded-full mt-2"></div>
-                </>
-              ) : null}
-            </motion.div>
-          ))}
+                  </motion.h3>
+                ) : null}
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

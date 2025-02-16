@@ -189,6 +189,47 @@ const flashcard_view = async (req, res) => {
   }
 };
 
+//controller for viewing the flashcards of an user
+const flashcard_show = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const limit = req.query.limit;
+    console.log(req.query.limit);
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Unauthorized: User ID missing" });
+    }
+
+    const collections = await FlashcardCollection.find({ userId });
+
+    const flashcards = await collections.reduce(
+      async (accPromise, collection) => {
+        const acc = await accPromise;
+        const flashcards = await Flashcard.find({
+          _id: { $in: collection.FlashcardsId },
+        });
+        return acc.concat(flashcards);
+      },
+      Promise.resolve([])
+    );
+
+    if (!flashcards) {
+      return res.status(404).json({
+        success: false,
+        message: "No flashcard collection found for this user",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      flashcards: flashcards.slice(0, limit),
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 const flashcard_view_all = async (req, res) => {
   try {
     const userId = req.user?._id;
@@ -382,6 +423,7 @@ export {
   flashcard_view,
   flashcard_view_all,
   flashcard_view_topicname,
+  flashcard_show,
   flashcard_edit,
   flashcard_delete,
   flashcard_view_of_collection,
