@@ -55,7 +55,7 @@ const handleSearch = (searchQuery)=>{
   navigate(`/search-flashcards/${searchQuery}`);
 }
   return (
-    <div className="relative">
+    <div className="w-full z-50">
       {/* Navbar */}
       <div className="flex justify-between items-center p-4 w-full bg-gradient-to-r from-blue-500 to-indigo-600 shadow-sm rounded-b-lg shadow-gray-400 z-50">
         {/* Logo */}
