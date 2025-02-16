@@ -22,7 +22,7 @@ export function ShowFlashcardCollection() {
 
     fetchFlashcards()
       .then(res => res.data)
-      .then(res => setFlashcardCollecion({
+      .then(res => setFlashcardCollection({
         topic: res.topic,
         flashcards: res.flashcards,
       }));

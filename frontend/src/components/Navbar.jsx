@@ -34,7 +34,7 @@ export function Navbar() {
         navigate("/home");
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -55,7 +55,7 @@ const handleSearch = (searchQuery)=>{
   navigate(`/search-flashcards/${searchQuery}`);
 }
   return (
-    <div className="w-full z-50">
+    <div className="relative w-full z-50">
       {/* Navbar */}
       <div className="flex justify-between items-center p-4 w-full bg-gradient-to-r from-blue-500 to-indigo-600 shadow-sm rounded-b-lg shadow-gray-400 z-50">
         {/* Logo */}
