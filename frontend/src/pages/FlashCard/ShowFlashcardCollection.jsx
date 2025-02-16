@@ -4,15 +4,13 @@ import axios from "axios";
 import { FlashcardCard } from "../../components/FlashcardCard.jsx";
 
 export function ShowFlashcardCollection() {
-  const { topicName } = useParams();
+  const { collectionId } = useParams();
   const [flashcardCollection, setFlashcardCollecion] = useState(null);
 
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flashcards/view/${topicName}`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flashcards/view/collection/${collectionId}`);
         console.log(res?.data);
         return res;
       } catch (e) {
@@ -27,7 +25,7 @@ export function ShowFlashcardCollection() {
         topic: res.topic,
         flashcards: res.flashcards,
       }));
-  }, [topicName]);
+  }, [collectionId]);
 
   return (
     <div className="flex flex-col p-16 w-full min-h-screen">
