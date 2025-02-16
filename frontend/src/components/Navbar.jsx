@@ -60,15 +60,9 @@ export function Navbar() {
           />
           <p className="text-sm">Search</p>
         </div>
-        <Link
-          to="/combat"
-          className="flex flex-col items-center text-white hover:scale-110 transition-transform"
-        >
-          <img
-            src="/combat.svg"
-            className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
-          />
-          <p className="text-sm">Combat</p>
+        <Link to="/games" className="navbar-items">
+          <img src="/combat.svg" />
+          <p>Combat</p>
         </Link>
         <Link
           to="/flashcards"

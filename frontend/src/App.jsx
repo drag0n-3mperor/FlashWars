@@ -65,9 +65,9 @@ function App() {
         <Route path="/flashcards" element={<FlashCard />}></Route>
         <Route path="/flashcards/view" element={<ShowFlashcard />}></Route>
         <Route path="/flashcards/revise" element={<ReviseFlashcard />}></Route>
-        <Route path="/combat" element={<Combat />}></Route>
-        <Route path="/combat/single-player" element={<FlipTileGame />}></Route>
-        <Route path="/combat/multi-player" element={<MultiPlayer />}></Route>
+        <Route path="/games" element={<Combat />}></Route>
+        <Route path="/games/single-player" element={<SinglePlayer />}></Route>
+        <Route path="/games/multi-player" element={<MultiPlayer />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
