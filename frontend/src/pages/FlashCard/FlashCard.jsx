@@ -1,4 +1,3 @@
-import "../styles/FlashCard.css";
 import { CreateFlashcard } from "./CreateFlashcard.jsx";
 import { FlashcardCollectionCard } from "../../components/FlashcardCollectionCard.jsx";
 import { Link } from "react-router-dom";
@@ -7,7 +6,7 @@ import { useEffect, useState } from "react";
 
 export const FlashCard = () => {
   const [flashcardCollections, setFlashcardCollections] = useState([]);
-  
+
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
@@ -15,7 +14,7 @@ export const FlashCard = () => {
           `${import.meta.env.VITE_BACKEND_URL}/flashcards/view`,
           { withCredentials: true }
         );
-        console.log(res.data)
+        console.log(res.data);
         if (res.status === 200) {
           setFlashcardCollections(res.data.collections);
         }
@@ -36,18 +35,27 @@ export const FlashCard = () => {
           className="flex flex-row justify-between p-8"
         >
           <p className="text-[#2b7fff] text-xl font-bold">Your flashcards</p>
-          <Link to="/flashcards/view" className="text-[#2b7fff] font-semibold underline">Show All</Link>
+          {flashcardCollections?.length > 1 && (
+            <Link
+              to="/flashcards/view"
+              className="text-[#2b7fff] font-semibold underline"
+            >
+              Show All
+            </Link>
+          )}
         </div>
         <div
           id="flashcard-show-body"
           className="flex flex-row justify-evenly pl-8 pr-8 flex-wrap"
         >
           {flashcardCollections.length > 0 ? (
-            flashcardCollections.slice(0, 6).map((flashcard, index) => (
-              <FlashcardCollectionCard flashcard={flashcard} key={index} />
-            ))
+            flashcardCollections
+              .slice(0, 6)
+              .map((flashcard, index) => (
+                <FlashcardCollectionCard flashcard={flashcard} key={index} />
+              ))
           ) : (
-            <h2 className="text-gray-600 text-2xl font-bold">
+            <h2 className="text-gray-600 text-2xl font-bold min-h-48">
               You have no flashcards yet... Create one to explore
             </h2>
           )}

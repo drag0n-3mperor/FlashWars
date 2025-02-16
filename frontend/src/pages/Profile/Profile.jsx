@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext"; // Ensure the correct path
+import { useAuth } from "../../context/AuthContext";
 import { FlashcardCollectionCard } from "../../components/FlashcardCollectionCard.jsx";
+import { Link } from "react-router-dom";
+import '../styles/Combat.css';
 
 const Profile = () => {
-  const { user } = useAuth(); // Access user from AuthContext
+  const { user } = useAuth();
   const [flashcardCollections, setFlashcardCollections] = useState([]);
 
   useEffect(() => {
@@ -26,40 +28,56 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto mt-6 mb-6 bg-white shadow-lg rounded-2xl overflow-hidden">
       {/* Profile Section */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 animate-shimmer  to-indigo-600 p-6 rounded-t-2xl">
         <div className="flex items-center">
           <img
-            src={user?.avatar || "https://via.placeholder.com/100"}
-            alt="Profile"
-            className="rounded-full w-24 h-24 mr-4 border-2 border-black transition-transform duration-300 transform hover:scale-105"
+            src={user?.imageUrl || "/assets/DEFAULT_AVATAR.jpg"}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/assets/DEFAULT_AVATAR.jpg";
+            }}
+            alt="Profile Avatar"
+            className="h-24 w-24 object-cover rounded-full border-4 border-white shadow-md"
           />
-          <div className="flex flex-col">
-            <h2 className="text-2xl font-bold">
+          <div className="ml-4">
+            <h2 className="text-3xl font-semibold text-white">
               {user?.fullname || "Username"}
             </h2>
-            <div className="flex items-center">
-              <span className="text-yellow-500 text-lg">⭐⭐⭐⭐⭐</span>
+            <div className="flex items-center mt-1">
+              <span className={`${user?.rating ? "text-yellow-300 text-lg font-bold" : "text-gray-300"}`}>
+                {user?.rating ? `${user.rating} ★` : "Unrated"}
+              </span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Flashcard Collection Section */}
-      <h3 className="text-3xl font-semibold mb-2 relative inline-block group">
-        Flashcard Collections
-        <span className="block h-1 bg-black scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100" />
-      </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-        {flashcardCollections.map((collection, index) => {
-          return (
-            <FlashcardCollectionCard
-              key={index}
-              flashcard={collection}
-            />
-          );
-        })}
+      <div className="flex justify-between items-center px-8 py-6 border-b border-gray-200">
+        <p className="text-blue-600 text-2xl font-bold">Your Flashcards</p>
+        {flashcardCollections?.length > 1 && (
+          <Link
+            to="/flashcards/view"
+            className="text-blue-600 font-semibold underline hover:text-blue-800 transition duration-300"
+          >
+            Show All
+          </Link>
+        )}
+      </div>
+
+      {/* Flashcard Grid */}
+      <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {flashcardCollections.length > 0 ? (
+          flashcardCollections.slice(0, 6).map((flashcard, index) => (
+            <FlashcardCollectionCard flashcard={flashcard} key={index} />
+          ))
+        ) : (
+          <h2 className="text-gray-500 text-xl font-semibold text-center col-span-full min-h-48 flex items-center justify-center">
+            You have no flashcards yet... Create one to explore
+          </h2>
+        )}
       </div>
     </div>
   );

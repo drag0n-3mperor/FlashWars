@@ -2,7 +2,7 @@ import { Navbar } from "./components/Navbar.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home/Home.jsx";
 import { FlashCard } from "./pages/FlashCard/FlashCard.jsx";
-import { ShowFlashcard } from "./pages/FlashCard/ShowFlashcard.jsx";
+import { ShowAllFlashcard } from "./pages/FlashCard/ShowAllFlashcard.jsx";
 import Footer from "./components/Footer.jsx";
 import Auth from "./pages/Home/Auth.jsx";
 // import { socket } from "./utils/socket.js";
@@ -14,7 +14,8 @@ import { useSocket } from "./context/SocketContext.jsx";
 import { MultiPlayer } from "./pages/Combat/MultiPlayer.jsx";
 // import { SinglePlayer } from "./pages/Combat/SinglePlayer.jsx";
 import FlipTileGame from "./pages/Combat/FlipTileGame.jsx";
-import ReviseFlashcard from './pages/FlashCard/ReviseFlashcard';
+import ReviseFlashcard from "./pages/FlashCard/ReviseFlashcard";
+import { ShowFlashcardCollection } from "./pages/FlashCard/ShowFlashcardCollection.jsx";
 
 function App() {
   const socket = useSocket();
@@ -63,10 +64,14 @@ function App() {
           }
         ></Route>
         <Route path="/flashcards" element={<FlashCard />}></Route>
-        <Route path="/flashcards/view" element={<ShowFlashcard />}></Route>
+        <Route path="/flashcards/view" element={<ShowAllFlashcard />}></Route>
         <Route path="/flashcards/revise" element={<ReviseFlashcard />}></Route>
+        <Route
+          path="/flashcards/view/:topicName"
+          element={<ShowFlashcardCollection />}
+        ></Route>
         <Route path="/games" element={<Combat />}></Route>
-        <Route path="/games/single-player" element={<SinglePlayer />}></Route>
+        <Route path="/games/single-player" element={<FlipTileGame />}></Route>
         <Route path="/games/multi-player" element={<MultiPlayer />}></Route>
       </Routes>
       <Footer />
