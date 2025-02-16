@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home/Home.jsx";
 import { FlashCard } from "./pages/FlashCard/FlashCard.jsx";
 import { ShowFlashcard } from "./pages/FlashCard/ShowFlashcard.jsx";
-import Footer from "./pages/Home/Footer.jsx";
+import Footer from "./components/Footer.jsx";
 import Auth from "./pages/Home/Auth.jsx";
 // import { socket } from "./utils/socket.js";
 import { useEffect } from "react";
@@ -12,7 +12,8 @@ import Profile from "./pages/Profile/Profile.jsx";
 import { Combat } from "./pages/Combat/Combat.jsx";
 import { useSocket } from "./context/SocketContext.jsx";
 import { MultiPlayer } from "./pages/Combat/MultiPlayer.jsx";
-import { SinglePlayer } from "./pages/Combat/SinglePlayer.jsx";
+// import { SinglePlayer } from "./pages/Combat/SinglePlayer.jsx";
+import FlipTileGame from "./pages/Combat/FlipTileGame.jsx";
 
 function App() {
   const socket = useSocket();
@@ -68,7 +69,6 @@ function App() {
       </Routes>
       <Footer />
     </BrowserRouter>
-
   );
 }
 
