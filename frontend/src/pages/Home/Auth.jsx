@@ -155,7 +155,7 @@ export default function Auth() {
       if (response.status === 201) {
         // console.log("OTP verified successfully");
         setIsAuthenticated(true); // Update authentication state
-        // navigate("/users/profile");
+        navigate("/users/profile");
       } else {
         setOtpMsg({
           success: false,

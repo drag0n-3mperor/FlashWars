@@ -32,7 +32,7 @@ const Profile = () => {
       <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 animate-shimmer  to-indigo-600 p-6 rounded-t-2xl">
         <div className="flex items-center">
           <img
-            src={user?.imageUrl || "/assets/DEFAULT_AVATAR.jpg"}
+            src={user?.avatar || "/assets/DEFAULT_AVATAR.jpg"}
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = "/assets/DEFAULT_AVATAR.jpg";
@@ -42,11 +42,11 @@ const Profile = () => {
           />
           <div className="ml-4">
             <h2 className="text-3xl font-semibold text-white">
-              {user?.fullname || "Username"}
+              {user?.username || "Username"}
             </h2>
             <div className="flex items-center mt-1">
               <span className={`${user?.rating ? "text-yellow-300 text-lg font-bold" : "text-gray-300"}`}>
-                {user?.rating ? `${user.rating} ★` : "Unrated"}
+                {user?.rating ? `${user.rating}` : "Unrated"}
               </span>
             </div>
           </div>
