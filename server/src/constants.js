@@ -1,2 +1,2 @@
-export const combatTotalQuestions = 5;
-export const combatTotalTime = 10;
+export const combatTotalQuestions = 7;
+export const combatTotalTime = 60;

@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import flashcardRoutes from "../src/routes/flashcard.route.js";
 import userRoutes from "../src/routes/user.route.js";
-
+import searchRoutes from "../src/routes/search.route.js"
 const app = express();
 
 app.use(express.static("public"));
@@ -31,5 +31,6 @@ app.use((req, res, next) => {
 
 app.use("/flashcards", flashcardRoutes);
 app.use("/users", userRoutes);
+app.use("/search" , searchRoutes)
 
 export default app;

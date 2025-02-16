@@ -101,7 +101,7 @@ export const onConnectionController = (socket) => {
 
       //fetch flashcards
       const flashcards = await getFlashcard();
-      // console.log(flashcards);
+      console.log("from join- ",flashcards);
       gameRoom.addFlashCards(flashcards);
       gameRoomIds.set(String(user.username), gameRoom.roomId);
       gameRoomIds.set(opponentId, gameRoom.roomId);

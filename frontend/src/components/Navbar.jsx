@@ -16,7 +16,7 @@ export function Navbar() {
           <img src="/search.svg" />
           <p>Search</p>
         </div>
-        <Link to="/combat" className="navbar-items">
+        <Link to="/games" className="navbar-items">
           <img src="/combat.svg" />
           <p>Combat</p>
         </Link>
