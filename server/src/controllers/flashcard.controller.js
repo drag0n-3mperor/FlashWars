@@ -106,13 +106,13 @@ const flashcard_view_topicname = async (req, res) => {
       });
     }
 
-    const flashcards = {
-      ...collection,
-      flashcards: null,
-    };
+    const flashcards = await Promise.all(
+      collection.FlashcardsId.map(async (e, ind) => await Flashcard.findById(e))
+    );
 
     res.status(200).json({
       success: true,
+      topic: collection.topic,
       flashcards,
     });
   } catch (error) {
@@ -180,7 +180,7 @@ const flashcard_view_all = async (req, res) => {
     res.status(200).json({
       success: true,
       collections: flashcardCollections,
-      topics: collections.map(e => e.topic),
+      topics: collections.map((e) => e.topic),
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
