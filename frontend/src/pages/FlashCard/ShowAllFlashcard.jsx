@@ -25,27 +25,25 @@ export function ShowAllFlashcard() {
   }, []);
 
   return (
-    <div id="flashcard-show-container" className="h-screen">
+    <div className="max-w-4xl bg-white mx-auto mt-6 mb-6 shadow-md shadow-gray-400 rounded-3xl">
+      {/* Header Section */}
       <div
-        id="flashcard-show-header"
-        className="flex flex-row justify-between p-8"
+        className="flex items-center justify-center bg-blue-700 p-6 rounded-t-3xl"
       >
-        <p className="text-[#2b7fff] w-full text-center text-xl font-bold">Your flashcards</p>
+        <h2 className="text-2xl font-bold text-white">Your Flashcards</h2>
       </div>
-      <div
-        id="flashcard-show-body"
-        className="flex flex-row justify-evenly pl-8 pr-8 flex-wrap"
-      >
+
+      {/* Flashcards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
         {flashcardCollections.length > 0 ? (
-          flashcardCollections
-            .slice(0, 6)
-            .map((flashcard, index) => (
-              <FlashcardCollectionCard flashcard={flashcard} key={index} />
-            ))
+          flashcardCollections.map((flashcard, index) => (
+            <FlashcardCollectionCard flashcard={flashcard} key={index} />
+          ))
         ) : (
-          <h2 className="text-gray-600 text-2xl font-bold">
-            You have no flashcards yet... Create one to explore
-          </h2>
+          <div className="col-span-full flex flex-col items-center justify-center text-gray-600 text-xl font-semibold py-16">
+            <p>You have no flashcards yet...</p>
+            <p className="text-gray-500 text-lg mt-2">Create one to explore!</p>
+          </div>
         )}
       </div>
     </div>

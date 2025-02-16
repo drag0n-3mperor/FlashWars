@@ -3,7 +3,6 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { FlashcardCollectionCard } from "../../components/FlashcardCollectionCard.jsx";
 import { Link } from "react-router-dom";
-import '../styles/Combat.css';
 
 const Profile = () => {
   const { user } = useAuth();
