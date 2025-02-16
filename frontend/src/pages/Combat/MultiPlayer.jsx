@@ -138,6 +138,11 @@ export function MultiPlayer() {
     players.player2,
   ]);
 
+  const allQuestionsSubmittedYou =
+    answersCurrentPlayer.length === combatTotalQuestions;
+  const allQuestionsSubmittedOpponent =
+    answersOponent.length === combatTotalQuestions;
+
   return gameEnded ? (
     <div className="flex items-center justify-center">
       <ShowWinner
@@ -180,9 +185,21 @@ export function MultiPlayer() {
                     : players.player2
                 }
               />
-              <div className="w-83 h-105">
-                <CombatQuestionCard flashcard={displayFlashcard} />
-              </div>
+              {allQuestionsSubmittedYou ? (
+                <div className="bg-blue-100 p-6 rounded-2xl shadow-lg border border-blue-300 max-w-lg mx-auto text-center">
+                  <h2 className="text-3xl font-extrabold text-blue-700 mb-4">
+                    All questions submitted!
+                  </h2>
+                  <p className="text-lg font-medium text-gray-800">
+                    You answered {combatTotalQuestions} out of{" "}
+                    {combatTotalQuestions} questions.
+                  </p>
+                </div>
+              ) : (
+                <div className="w-83 h-105">
+                  <CombatQuestionCard flashcard={displayFlashcard} />
+                </div>
+              )}
             </div>
 
             {/* Second Card */}
@@ -202,7 +219,19 @@ export function MultiPlayer() {
               />
               {/* Empty section with blur effect */}
 
-              <div className="w-83 h-105 bg-gradient-to-r from-[#f4fbce] via-[#e8f7a5] to-[#dff27e] rounded-md animate-shimmer animate-blur-effect"></div>
+              {allQuestionsSubmittedOpponent ? (
+                <div className="bg-green-100 p-6 rounded-2xl shadow-lg border border-green-300 max-w-lg mx-auto text-center">
+                  <h2 className="text-3xl font-extrabold text-green-700 mb-4">
+                    All questions submitted!
+                  </h2>
+                  <p className="text-lg font-medium text-gray-800">
+                    Opponent answered {combatTotalQuestions} out of{" "}
+                    {combatTotalQuestions} questions.
+                  </p>
+                </div>
+              ) : (
+                <div className="w-83 h-105 bg-gradient-to-r from-[#f4fbce] via-[#e8f7a5] to-[#dff27e] rounded-md animate-shimmer animate-blur-effect"></div>
+              )}
             </div>
           </div>
         </div>
