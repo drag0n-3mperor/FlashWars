@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="264" height="264">
+<g font-size="20" font-family="Times New Roman, serif">
+<switch transform="translate(198,120)" text-anchor="middle">
+<text systemLanguage="as">ক্ষেত্ৰফল = r²</text>
+<text systemLanguage="cs">Obsah = r²</text>
+<text systemLanguage="en">Area = r²</text>
+<text systemLanguage="de">Fläche = r²</text>
+<text systemLanguage="es">Área = r²</text>
+<text systemLanguage="id">Luas = r²</text>
+<text systemLanguage="ja">面積 = r²</text>
+<text systemLanguage="ko">넓이 = r²</text>
+<text systemLanguage="mk">Плоштина = r²</text>
+<text systemLanguage="nl" font-size="17">Oppervlakte = r²</text>
+<text systemLanguage="pt">Área = r²</text>
+<text systemLanguage="ro">Aria = r²</text>
+<text systemLanguage="sr">Површина = r²</text>
+<text systemLanguage="tr">Alan = r²</text>
+<text systemLanguage="uk">Площа = r²</text>
+<text systemLanguage="vi">Diện tích = r²</text>
+<text systemLanguage="zh">面积 = r²</text>
+</switch>
+<switch transform="translate(132,199)" text-anchor="middle">
+<text systemLanguage="as">বৃত্তৰ ক্ষেত্ৰফল = π r²</text>
+<text systemLanguage="cs">Obsah kruhu = π r²</text>
+<text systemLanguage="en">Circle Area = π r²</text>
+<text systemLanguage="de">Kreisfläche = π r²</text>
+<text systemLanguage="es">Área del círculo = π r²</text>
+<text systemLanguage="id">Luas lingkaran = π r²</text>
+<text systemLanguage="ja">丸の面積 = π r²</text>
+<text systemLanguage="ko">원의 넓이 = π r²</text>
+<text systemLanguage="mk" font-size="16">Плоштина на круг = π r²</text>
+<text systemLanguage="nl" font-size="16">Oppervlakte van een cirkel = π r²</text>
+<text systemLanguage="pt">Área do círculo = π r²</text>
+<text systemLanguage="ro">Aria cercului = π r²</text>
+<text systemLanguage="sr" font-size="16">Површина квадрата = π r²</text>
+<text systemLanguage="tr">Bir dairenin alanı = π r²</text>
+<text systemLanguage="uk">Площа кола = π r²</text>
+<text systemLanguage="vi" font-size="17">Diện tích đường tròn = π r²</text>
+<text systemLanguage="zh">圆面积 = π r²</text>
+</switch>
+</g>
+<g stroke="#000">
+<circle cx="132" cy="132" r="130" fill="none"/>
+<path fill="gray" stroke="#000" fill-opacity=".5"
+d="m132,132h130V2H132zm7,7-14-14m0,14 14-14"/></g>
+<path d="m262,132-10-2.5v5"/>
+</svg>

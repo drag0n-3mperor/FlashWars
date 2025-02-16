@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
-  const { setIsAuthenticated, setUser, user } = useAuth();
+  const { isAuthenticated, setIsAuthenticated, setUser, user } = useAuth();
   const navigate = useNavigate();
   const [registerInitiated, setRegisterInitiated] = useState(false);
   const [otp, setOtp] = useState("");
@@ -128,7 +128,7 @@ export default function Auth() {
 
   return (
     <>
-      {setIsAuthenticated ? (
+      {isAuthenticated ? (
         <>User Already logged in</>
       ) : (
         <div className="bg-gray-200 flex items-center justify-center min-h-screen">
@@ -141,7 +141,7 @@ export default function Auth() {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
                       <input
-                        {...register("username", {
+                        {...register("email", {
                           required: "Username is required",
                         })}
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"

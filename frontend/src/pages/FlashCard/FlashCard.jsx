@@ -15,6 +15,7 @@ export const FlashCard = () => {
           `${import.meta.env.VITE_BACKEND_URL}/flashcards/view`,
           { withCredentials: true }
         );
+        console.log(res.data)
         if (res.status === 200) {
           setFlashcardCollections(res.data.collections);
         }
@@ -28,14 +29,14 @@ export const FlashCard = () => {
 
   return (
     <div className="flex flex-col g-0">
-      <CreateFlashcard />
+      <CreateFlashcard flashcardCollections={flashcardCollections} />
       <div id="flashcard-show-container">
         <div
           id="flashcard-show-header"
           className="flex flex-row justify-between p-8"
         >
           <p className="text-[#2b7fff] text-xl font-bold">Your flashcards</p>
-          <Link to="/flashcards/view-all" className="text-[#2b7fff] font-semibold underline">Show All</Link>
+          <Link to="/flashcards/view" className="text-[#2b7fff] font-semibold underline">Show All</Link>
         </div>
         <div
           id="flashcard-show-body"

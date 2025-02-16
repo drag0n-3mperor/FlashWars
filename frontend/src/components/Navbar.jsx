@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export function Navbar() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
   const location = useLocation();
   const [isProfilePage, setIsProfilePage] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log(location.pathname);
+    console.log(isAuthenticated);
     if (location.pathname === "/profile") {
       setIsProfilePage(true);
     } else {
@@ -18,13 +19,17 @@ export function Navbar() {
     }
   }, [location]);
 
-  const handleLogout = async () => {    
+  const handleLogout = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/logout`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/users/logout`,
+        {
+          withCredentials: true,
+        }
+      );
       if (res.status === 201) {
         console.log(`User logout successfully.`);
+        setIsAuthenticated(false);
         navigate("/home");
       }
     } catch (e) {
@@ -35,7 +40,9 @@ export function Navbar() {
   return (
     <div
       id="navbar"
-      className={`flex justify-between items-center p-4 w-full bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md rounded-b-lg shadow-gray-400`}
+      className={`flex justify-between items-center p-4 
+        w-full bg-gradient-to-r from-blue-500 to-indigo-600 shadow-sm 
+        rounded-b-lg shadow-gray-400 z-50`}
     >
       {/* Logo */}
       <div id="navbar-logo" className="text-3xl font-bold text-white w-32">
@@ -72,6 +79,26 @@ export function Navbar() {
             className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
           />
           <p className="text-sm">Create</p>
+        </Link>
+        <Link
+          to="/flashcards/view"
+          className="flex flex-col items-center text-white hover:scale-110 transition-transform"
+        >
+          <img
+            src="/collection.svg"
+            className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
+          />
+          <p className="text-sm">View</p>
+        </Link>
+        <Link
+          to="/flashcards/revise"
+          className="flex flex-col items-center text-white hover:scale-110 transition-transform"
+        >
+          <img
+            src="/bookmark.svg"
+            className="w-6 h-6 fill-white hover:fill-gray-200 transition-colors"
+          />
+          <p className="text-sm">Revise</p>
         </Link>
         {isAuthenticated ? (
           !isProfilePage ? (
