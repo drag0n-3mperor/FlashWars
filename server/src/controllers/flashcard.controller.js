@@ -1,5 +1,6 @@
 import { Flashcard, flashcard_zod_schema } from "../models/flashcard.model.js";
 import { FlashcardCollection } from "../models/flashcard_collection.model.js";
+import { User } from "../models/user.model.js";
 
 // controller for creating flash card
 const flashcard_create = async (req, res) => {
@@ -79,7 +80,7 @@ const flashcard_create = async (req, res) => {
 //controller for viewing flashcard by topic name
 const flashcard_view_topicname = async (req, res) => {
   try {
-    const { topic } = req.params;
+    const { topic, username } = req.params;
     if (!topic) {
       return res
         .status(400)
@@ -114,6 +115,47 @@ const flashcard_view_topicname = async (req, res) => {
       success: true,
       topic: collection.topic,
       flashcards,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+//controller for viewing all existing collections along with their user data for a topic name
+const flashcard_view_all_topicname = async (req, res) => {
+  try {
+    const { searchQuery } = req.params;
+    if (!searchQuery) {
+      25;
+      return res
+        .status(400)
+        .json({ success: false, message: "Topic is required" });
+    }
+
+    const topicSmall = searchQuery.toLowerCase();
+
+    // find collections for the topic
+    const collections = await FlashcardCollection.find({ topic: topicSmall });
+    console.log("Search query:", searchQuery);
+
+    if (collections.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No flashcard collections found for this topic",
+      });
+    }
+
+    const userIds = collections.map((collection) => collection.userId);
+
+    // find users for those IDs
+    const users = await User.find({ _id: { $in: userIds } }).select(
+      "-password -email"
+    );
+
+    res.status(200).json({
+      success: true,
+      collections,
+      users,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -191,13 +233,14 @@ const flashcard_view_all = async (req, res) => {
 const flashcard_view_of_collection = async (req, res) => {
   try {
     const { flashcardCollectionId } = req.params;
-    const userId = req.user?._id;
-    if (!userId) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Unauthorized: User ID missing" });
-    }
+    // const userId = req.user?._id;
+    // if (!userId) {
+    //   return res
+    //     .status(401)
+    //     .json({ success: false, message: "Unauthorized: User ID missing" });
+    // }
     const flashcards = await Flashcard.find({ flashcardCollectionId });
+    const collection = await FlashcardCollection.findById(flashcardCollectionId);
     if (!flashcards) {
       return res.status(404).json({
         success: false,
@@ -207,6 +250,7 @@ const flashcard_view_of_collection = async (req, res) => {
     res.status(200).json({
       success: true,
       flashcards,
+      topic: collection.topic,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -341,4 +385,5 @@ export {
   flashcard_edit,
   flashcard_delete,
   flashcard_view_of_collection,
+  flashcard_view_all_topicname,
 };

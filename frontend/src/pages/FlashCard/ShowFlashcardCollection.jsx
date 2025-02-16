@@ -4,16 +4,15 @@ import axios from "axios";
 import { FlashcardCard } from "../../components/FlashcardCard.jsx";
 
 export function ShowFlashcardCollection() {
-  const { topicName } = useParams();
+  const { collectionId } = useParams();
   const [flashcardCollection, setFlashcardCollection] = useState(null);
 
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/flashcards/view/${topicName}`,
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flashcards/view/collection/${collectionId}`);
+        console.log(res?.data);
+
         return res;
       } catch (e) {
         console.error(e);
@@ -22,14 +21,12 @@ export function ShowFlashcardCollection() {
     };
 
     fetchFlashcards()
-      .then((res) => res?.data)
-      .then((res) =>
-        setFlashcardCollection({
-          topic: res?.topic,
-          flashcards: res?.flashcards || [],
-        })
-      );
-  }, [topicName]);
+      .then(res => res.data)
+      .then(res => setFlashcardCollecion({
+        topic: res.topic,
+        flashcards: res.flashcards,
+      }));
+  }, [collectionId]);
 
   return (
     <div className="max-w-4xl bg-white mx-auto mt-6 mb-6 shadow-md shadow-gray-400 rounded-3xl">

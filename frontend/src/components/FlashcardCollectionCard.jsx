@@ -8,7 +8,7 @@ export function FlashcardCollectionCard({ flashcard }) {
 
   return (
     <button
-      onClick={() => navigate(`/flashcards/view/${flashcard.topic}`)}
+      onClick={() => navigate(`/flashcards/view/${flashcard._id}`)}
       className="flex flex-col items-center justify-center gap-4 p-6 w-64 h-72 
                  bg-gradient-to-br from-green-100 to-green-300 text-gray-800 
                  rounded-3xl shadow-lg hover:shadow-2xl hover:scale-105 
