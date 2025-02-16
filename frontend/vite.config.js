@@ -8,6 +8,6 @@ export default defineConfig({
     tailwindcss()
   ],
   server: {
-    allowedHosts: ['flashwars-frontend.onrender.com'],
+    allowedHosts: ['flashwars.onrender.com'],
   }
 });
