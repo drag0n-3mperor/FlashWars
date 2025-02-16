@@ -37,18 +37,25 @@ export default class GameRoom {
     console.log(this.clientFlashcards);
   }
 
-  submitAnswer(player, answer, index) {
+  submitAnswer(player, answer) {
     const playerId = String(player);
     if (!this.status[playerId]) return false;
 
     const temp = this.status[playerId];
+    const index = temp.length;
 
     if (temp.length < combatTotalQuestions) {
+      const correctAnswer =
+        this.flashcards[index]?.options[
+          this.flashcards[index]?.correct_answer_index
+        ];
       this.status[playerId] = [
         ...temp,
-        this.flashcards[index]?.answer === answer,
+        String(correctAnswer) === String(answer),
       ];
-      this.points[playerId] += this.flashcards[index]?.answer === answer;
+      console.log("from submit answer- ", correctAnswer);
+      console.log(answer);
+      this.points[playerId] += String(correctAnswer) === String(answer);
     }
     return this;
   }
