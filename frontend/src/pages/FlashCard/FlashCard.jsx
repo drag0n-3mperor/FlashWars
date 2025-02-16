@@ -27,39 +27,34 @@ export const FlashCard = () => {
   }, []);
 
   return (
-    <div className="flex flex-col g-0">
+    <div className="flex max-w-4xl bg-white mx-auto flex-col min-h-screen m-8" style={{borderRadius: "1rem"}}>
+      {/* Create Flashcard Section */}
       <CreateFlashcard flashcardCollections={flashcardCollections} />
-      <div id="flashcard-show-container">
-        <div
-          id="flashcard-show-header"
-          className="flex flex-row justify-between p-8"
-        >
-          <p className="text-[#2b7fff] text-xl font-bold">Your flashcards</p>
-          {flashcardCollections?.length > 1 && (
-            <Link
-              to="/flashcards/view"
-              className="text-[#2b7fff] font-semibold underline"
-            >
-              Show All
-            </Link>
-          )}
-        </div>
-        <div
-          id="flashcard-show-body"
-          className="flex flex-row justify-evenly pl-8 pr-8 flex-wrap"
-        >
-          {flashcardCollections.length > 0 ? (
-            flashcardCollections
-              .slice(0, 6)
-              .map((flashcard, index) => (
-                <FlashcardCollectionCard flashcard={flashcard} key={index} />
-              ))
-          ) : (
-            <h2 className="text-gray-600 text-2xl font-bold min-h-48">
-              You have no flashcards yet... Create one to explore
-            </h2>
-          )}
-        </div>
+
+      {/* Flashcard Collection Section */}
+      <div className="flex justify-between items-center px-8 py-6 border-b border-gray-200">
+        <p className="text-blue-600 text-2xl font-bold">Your Flashcards</p>
+        {flashcardCollections?.length > 1 && (
+          <Link
+            to="/flashcards/view"
+            className="text-blue-600 font-semibold underline hover:text-blue-800 transition duration-300"
+          >
+            Show All
+          </Link>
+        )}
+      </div>
+
+      {/* Flashcard Grid */}
+      <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {flashcardCollections.length > 0 ? (
+          flashcardCollections.slice(0, 6).map((flashcard, index) => (
+            <FlashcardCollectionCard flashcard={flashcard} key={index} />
+          ))
+        ) : (
+          <h2 className="text-gray-500 text-xl font-semibold text-center col-span-full min-h-48 flex items-center justify-center">
+            You have no flashcards yet... Create one to explore
+          </h2>
+        )}
       </div>
     </div>
   );

@@ -87,7 +87,7 @@ export function CreateFlashcard({ flashcardCollections }) {
   };
 
   return (
-    <div className="h-full flex flex-col p-16 gap-8 primary-bg">
+    <div className="h-full flex flex-col p-16 gap-8 primary-bg" style={{borderRadius: "1rem 1rem 0 0"}}>
       <h2 className="text-center w-full text-2xl font-bold">
         Create Your FlashCard
       </h2>
