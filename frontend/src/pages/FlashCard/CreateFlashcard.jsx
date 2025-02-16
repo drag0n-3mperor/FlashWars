@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-export function CreateFlashcard() {
+export function CreateFlashcard({ flashcardCollections }) {
   const [isContentTypeFlashcard, setIsContentTypeFlashcard] = useState(true);
   const [topicName, setTopicName] = useState("");
   const [content, setContent] = useState("");
@@ -9,19 +9,11 @@ export function CreateFlashcard() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [answerInput, setAnswerInput] = useState("");
   const [message, setMessage] = useState(null);
+  const [topicNames, setTopicNames] = useState([]);
 
-  const topicNames = [
-    "Artificial Intelligence",
-    "Machine Learning",
-    "Web Development",
-    "Data Science",
-    "Cloud Computing",
-    "Cybersecurity",
-    "Blockchain",
-    "Internet of Things",
-    "DevOps",
-    "Software Engineering",
-  ];
+  useEffect(() => {
+    setTopicNames(flashcardCollections.map((e, ind) => e.topic));
+  }, [flashcardCollections]);
 
   const handleContentTypeButton = (e) => {
     e.preventDefault();
@@ -64,13 +56,19 @@ export function CreateFlashcard() {
       );
 
       if (res.status === 201) {
-        setMessage({ type: "success", text: "Flashcard created successfully!" });
-        handleClear();
+        setMessage({
+          type: "success",
+          text: "Flashcard created successfully!",
+        });
+        setContent("");
+        setAnswerInput("");
       }
     } catch (error) {
       setMessage({
         type: "error",
-        text: error.response?.data?.message || "An error occurred. Please try again.",
+        text:
+          error.response?.data?.message ||
+          "An error occurred. Please try again.",
       });
     }
 
@@ -90,12 +88,16 @@ export function CreateFlashcard() {
 
   return (
     <div className="h-full flex flex-col p-16 gap-8 primary-bg">
-      <h2 className="text-center w-full text-2xl font-bold">Create Your FlashCard</h2>
+      <h2 className="text-center w-full text-2xl font-bold">
+        Create Your FlashCard
+      </h2>
 
       {message && (
         <div
           className={`p-4 mb-4 ${
-            message.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+            message.type === "success"
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
           }`}
         >
           {message.text}
@@ -107,14 +109,18 @@ export function CreateFlashcard() {
           <button
             id="content-type-flashcard"
             onClick={handleContentTypeButton}
-            className={isContentTypeFlashcard ? "selected-button-flashcard-create" : ""}
+            className={
+              isContentTypeFlashcard ? "selected-button-flashcard-create" : ""
+            }
           >
             Content Type
           </button>
           <button
             id="qna-type-flashcard"
             onClick={handleContentTypeButton}
-            className={!isContentTypeFlashcard ? "selected-button-flashcard-create" : ""}
+            className={
+              !isContentTypeFlashcard ? "selected-button-flashcard-create" : ""
+            }
           >
             Q/A Type
           </button>

@@ -7,29 +7,25 @@ const flashcards = [
     id: 1,
     text: "Volume of a Cone",
     status: "Study Again",
-    imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/5/56/Cone_surface_area.svg",
+    imageUrl: "/assets/Cone_surface_area.svg",
   },
   {
     id: 2,
     text: "Area of a Circle",
     status: "Got It",
-    imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/c/ce/Circle_Area.svg",
+    imageUrl: "/assets/Circle_Area.svg",
   },
   {
     id: 3,
     text: "Pythagorean Theorem",
     status: "Study Again",
-    imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/0/03/Einstein-trigonometric-proof.svg",
+    imageUrl: "/assets/Einstein-trigonometric-proof.svg",
   },
   {
     id: 4,
     text: "Quadratic Formula",
     status: "Got It",
-    imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/c/c4/Quadratic_formula.svg",
+    imageUrl: "/assets/Quadratic_formula.svg",
   },
 ];
 

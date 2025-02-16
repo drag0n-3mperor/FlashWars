@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-99 -92 180 180" text-anchor="middle">
+<linearGradient id="g" y2=".3">
+<stop stop-color="#f60"/>
+<stop stop-color="#fc0" offset=".5"/>
+<stop stop-color="#f90" offset="1"/>
+</linearGradient>
+<path fill="url(#g)" d="M-66-5l-30,85c0,9 60,9 60,0"/>
+<g fill="#fc0" stroke="#000">
+<path stroke="#06f" stroke-dasharray="9.43" d="M-78-45a90,90 0 0 0 156,0L0-90M0,0a30,30 0 1 1 -.1,0"/>
+<path d="M78-45L0-90M0,30v30M-14-82q14,9 28,0"/>
+<path fill="none" d="M-66-5v85h30zv80h5v5"/>
+</g>
+<text y="50" x="-64" text-anchor="start">&#8462;<tspan y="76">&#119903;</tspan><tspan x="-36">&#8467;=&#8730;(&#119903;&#178;+&#8462;&#178;)</tspan></text>
+<text y="-63">360&#176;&#119903;/&#8467;<tspan x="53">&#8467;</tspan></text>
+<text y="47" x="7">&#119903;</text>
+<text y="-25" font-size="24">&#960;&#119903;&#8467;<tspan y="23" x="0">&#960;&#119903;&#178;</tspan></text>
+<text y="10" x="37" fill="#06f">2&#960;&#119903;</text>
+</svg>

@@ -14,6 +14,7 @@ import { useSocket } from "./context/SocketContext.jsx";
 import { MultiPlayer } from "./pages/Combat/MultiPlayer.jsx";
 // import { SinglePlayer } from "./pages/Combat/SinglePlayer.jsx";
 import FlipTileGame from "./pages/Combat/FlipTileGame.jsx";
+import ReviseFlashcard from './pages/FlashCard/ReviseFlashcard';
 
 function App() {
   const socket = useSocket();
@@ -24,7 +25,7 @@ function App() {
         console.log("Connected!");
       });
 
-      socket.on("connect_error", err => {
+      socket.on("connect_error", (err) => {
         console.log(err);
       });
 
@@ -62,7 +63,8 @@ function App() {
           }
         ></Route>
         <Route path="/flashcards" element={<FlashCard />}></Route>
-        <Route path="/flashcards/view-all" element={<ShowFlashcard />}></Route>
+        <Route path="/flashcards/view" element={<ShowFlashcard />}></Route>
+        <Route path="/flashcards/revise" element={<ReviseFlashcard />}></Route>
         <Route path="/games" element={<Combat />}></Route>
         <Route path="/games/single-player" element={<SinglePlayer />}></Route>
         <Route path="/games/multi-player" element={<MultiPlayer />}></Route>
