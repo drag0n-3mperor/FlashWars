@@ -24,7 +24,7 @@ export default function Auth() {
 
   // Handle form submission
   const onSubmit = async (data) => {
-    console.log("Form Submitted:", data);
+    console.log("Form Submitted:", data, isLogin);
     try {
       if (isLogin) {
         const response = await axios.post(
@@ -47,30 +47,30 @@ export default function Auth() {
 
           // Navigate to profile page
           navigate("/profile");
-        } else {
-          const tempFormData = new FormData();
-          tempFormData.append("username", data.username);
-          tempFormData.append("fullname", data.fullname);
-          tempFormData.append("email", data.email);
-          tempFormData.append("password", data.password);
-          setFormData(tempFormData);
-          setRegisteredEmail(data.email);
+        }
+      } else {
+        const tempFormData = new FormData();
+        tempFormData.append("username", data.username);
+        tempFormData.append("fullname", data.fullname);
+        tempFormData.append("email", data.email);
+        tempFormData.append("password", data.password);
+        setFormData(tempFormData);
+        setRegisteredEmail(data.email);
 
-          if (data.profileImage[0]) {
-            tempFormData.append("profileImage", data.profileImage[0]);
+        if (data.profileImage[0]) {
+          tempFormData.append("profileImage", data.profileImage[0]);
+        }
+
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/users/register`,
+          tempFormData,
+          {
+            withCredentials: true,
           }
+        );
 
-          const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/users/register`,
-            tempFormData,
-            {
-              withCredentials: true,
-            }
-          );
-
-          if (response.status === 200) {
-            setRegisterInitiated(true);
-          }
+        if (response.status === 200) {
+          setRegisterInitiated(true);
         }
       }
     } catch (e) {
@@ -81,6 +81,7 @@ export default function Auth() {
   const handleResendOtp = async (e) => {
     e.preventDefault();
     try {
+      setOtpError("");
       await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/users/register`,
         formData,
@@ -299,7 +300,7 @@ export default function Auth() {
                           Upload Profile Picture:
                         </label>
                         <input
-                          {...register("profilePic")}
+                          {...register("profileImage")}
                           type="file"
                           className="w-full p-2 border rounded-lg"
                           accept="image/*"
@@ -309,6 +310,7 @@ export default function Auth() {
                       <button
                         type="submit"
                         className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg mb-4"
+                        onClick={onSubmit}
                       >
                         Signup
                       </button>
