@@ -160,8 +160,8 @@ export default function FlipTileGame() {
           </div>
         </div>
       ) : (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-700 text-center bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">
+        <div className="flex justify-center items-center min-h-screen ">
+          <h1 className="text-3xl md:text-5xl font-bold text-gray-700 text-center ">
             There Is No QnA Flashcards Yet
           </h1>
         </div>
