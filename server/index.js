@@ -23,11 +23,11 @@ const connectDB = async () => {
 };
 
 connectDB()
-  .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log(`Express server listening on port ${process.env.PORT}`);
-    });
-  })
+  // .then(() => {
+  //   app.listen(process.env.PORT, () => {
+  //     console.log(`Express server listening on port ${process.env.PORT}`);
+  //   });
+  // })
   .then(() => {
     server.listen(process.env.SOCKET_PORT, () => {
       console.log(`Socket server listening on port ${process.env.SOCKET_PORT}`);
