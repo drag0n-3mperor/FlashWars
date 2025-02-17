@@ -48,6 +48,15 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/auth" element={<Auth />}></Route>
+
+        <Route
+          path="/profile"
+          element={
+            <UserPrivateRoute>
+              <Profile />
+            </UserPrivateRoute>
+          }
+        />
         <Route
           path="/flashcards"
           element={
@@ -57,25 +66,58 @@ function App() {
           }
         />
         <Route
-          path="/profile"
+          path="/flashcards/view"
           element={
             <UserPrivateRoute>
-              <Profile />
+              <ShowAllFlashcard />
             </UserPrivateRoute>
           }
-        ></Route>
-        <Route path="/flashcards" element={<FlashCard />}></Route>
-        <Route path="/flashcards/view" element={<ShowAllFlashcard />}></Route>
-        <Route path="/flashcards/revise" element={<ReviseFlashcard />}></Route>
+        />
+        <Route
+          path="/flashcards/revise"
+          element={
+            <UserPrivateRoute>
+              <ReviseFlashcard />
+            </UserPrivateRoute>
+          }
+        />
         <Route
           path="/flashcards/view/:collectionId"
-          element={<ShowFlashcardCollection />}
-        ></Route>
-        <Route path="/games" element={<Combat />}></Route>
-        <Route path="/games/single-player" element={<FlipTileGame />}></Route>
-        <Route path="/games/multi-player" element={<MultiPlayer />}></Route>
+          element={
+            <UserPrivateRoute>
+              <ShowFlashcardCollection />
+            </UserPrivateRoute>
+          }
+        />
+
+        <Route
+          path="/games"
+          element={
+            <UserPrivateRoute>
+              <Combat />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/games/single-player"
+          element={
+            <UserPrivateRoute>
+              <FlipTileGame />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/games/multi-player"
+          element={
+            <UserPrivateRoute>
+              <MultiPlayer />
+            </UserPrivateRoute>
+          }
+        />
+
         <Route path="/search-flashcards/:searchQuery" element={<Search />} />
       </Routes>
+
       <Footer />
     </BrowserRouter>
   );
