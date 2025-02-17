@@ -48,7 +48,7 @@ export function Animation() {
             The easiest way to make and study flashcards
           </h1>
           <p className="text-lg text-gray-700 mb-6">
-            A better way to study with flashcards is here. Quizlet makes it
+            A better way to study with flashcards is here. FlashWars makes it
             simple to create your own flashcards, study those of a classmate, or
             search our archive of millions of flashcard decks from other
             students.
@@ -70,7 +70,7 @@ export function Animation() {
               <div>
                 <p className="font-bold">90% of students</p>
                 <p className="text-gray-600">
-                  who use Quizlet report receiving higher grades
+                  who use FlashWars report receiving higher grades
                 </p>
               </div>
             </div>
