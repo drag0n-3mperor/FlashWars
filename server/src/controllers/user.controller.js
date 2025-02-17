@@ -239,8 +239,16 @@ const logout_user = async (req, res) => {
 
     return res
       .status(201)
-      .clearCookie("refreshToken")
-      .clearCookie("accessToken")
+      .clearCookie("refreshToken" , {
+        httpOnly: true, // Prevent access to the cookie via JavaScript
+        sameSite: "None", // Allows multisite request
+        secure: true,
+      })
+      .clearCookie("accessToken" , {
+        httpOnly: true, // Prevent access to the cookie via JavaScript
+        sameSite: "None", // Allows multisite request
+        secure: true,
+      })
       .json({ message: "User logout successful." });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
