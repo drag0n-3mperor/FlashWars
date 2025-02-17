@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FlashcardCard } from "../../components/FlashcardCard.jsx";
+import { LoaderComponent } from "../../components/LoaderComponent"
 
 export function ShowFlashcardCollection() {
   const { collectionId } = useParams();
@@ -42,10 +43,7 @@ export function ShowFlashcardCollection() {
             <FlashcardCard key={index} flashcard={flashcard} />
           ))
         ) : (
-          <div className="col-span-full flex flex-col items-center justify-center text-gray-600 text-xl font-semibold py-16">
-            <p>No flashcards available...</p>
-            <p className="text-gray-500 text-lg mt-2">Create one to start learning!</p>
-          </div>
+          <div><LoaderComponent/></div>
         )}
       </div>
     </div>
