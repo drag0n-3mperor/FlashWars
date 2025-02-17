@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 
@@ -11,6 +11,7 @@ export default function FlipTileGame() {
   const [hoverIndex, setHoverIndex] = useState(null);
   const [questionMap, setQuestionMap] = useState(new Map());
   const [play, setPlay] = useState(false);
+  const timerId = useRef();
 
   useEffect(() => {
     if (!play) return;
@@ -20,11 +21,12 @@ export default function FlipTileGame() {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/flashcards/show/`,
           {
-            params: { limit: 8 },
+            params: { limit: 2, answerOnly: true },
             withCredentials: true,
           }
         );
 
+        console.log(res?.data?.flashcards);
         if (!res?.data?.flashcards) return;
 
         const newQuestionMap = new Map();
@@ -44,8 +46,8 @@ export default function FlipTileGame() {
     };
 
     fetchData();
-    const timerId = setInterval(() => setTime((prev) => prev + 1), 1000);
-    return () => clearInterval(timerId);
+    timerId.current = setInterval(() => setTime((prev) => prev + 1), 1000);
+    return () => clearInterval(timerId.current);
   }, [play]);
 
   const shuffleArray = (array) => {
@@ -71,11 +73,22 @@ export default function FlipTileGame() {
     if (flipped.length === 2) {
       const [first, second] = flipped;
       if (questionMap.get(tiles[first]) === tiles[second]) {
-        setTimeout(() => setMatched((prev) => [...prev, first, second]), 500);
+        setTimeout(() => {
+          setMatched((prev) => [...prev, first, second]);
+        }, 500);
       }
-      setTimeout(() => setFlipped([]), 1000);
+      setTimeout(() => {
+        setFlipped([]);
+      }, 1000);
     }
   }, [flipped, questionMap, tiles]);
+
+  useEffect(() => {
+    if (matched.length === tiles.length) {
+      clearInterval(timerId.current);
+      timerId.current = null;
+    }
+  }, [matched]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-200 to-purple-400 p-4">
@@ -99,7 +112,7 @@ export default function FlipTileGame() {
           </div>
 
           {matched.length === tiles.length && (
-            <h2 className="text-3xl font-bold text-green-500 animate-pulse">
+            <h2 className="text-6xl font-bold text-green-500 animate-pulse mt-32">
               🎉 You Win! 🎉
             </h2>
           )}

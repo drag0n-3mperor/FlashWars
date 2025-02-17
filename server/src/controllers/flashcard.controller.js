@@ -193,7 +193,7 @@ const flashcard_view = async (req, res) => {
 const flashcard_show = async (req, res) => {
   try {
     const userId = req.user?._id;
-    const limit = req.query.limit;
+    const { limit, answerOnly } = req.query;
     console.log(req.query.limit);
     if (!userId) {
       return res
@@ -201,20 +201,32 @@ const flashcard_show = async (req, res) => {
         .json({ success: false, message: "Unauthorized: User ID missing" });
     }
 
-    const collections = await FlashcardCollection.find({ userId });
+    const user = await User.findById(userId);
+    const collections = user?.flashcardCollections?.map((e) => e[0]) || [];
+    // console.log(collections);
 
-    const flashcards = await collections.reduce(
-      async (accPromise, collection) => {
-        const acc = await accPromise;
-        const flashcards = await Flashcard.find({
-          _id: { $in: collection.FlashcardsId },
-        });
-        return acc.concat(flashcards);
+    const pipeline = [
+      {
+        $match: { flashcardCollectionId: { $in: collections } }, // Ensure correct field
       },
-      Promise.resolve([])
-    );
+    ];
 
-    if (!flashcards) {
+    // Conditionally filter out empty answers if answerOnly is true
+    if (answerOnly) {
+      pipeline.push({
+        $match: { answer: { $ne: "" } },
+      });
+    }
+
+    // Sample a random set of documents
+    const sampleSize = Number.isNaN(parseInt(limit)) ? 1 : parseInt(limit);
+    pipeline.push({ $sample: { size: sampleSize } });
+
+    // Execute the aggregation
+    const flashcards = await Flashcard.aggregate(pipeline);
+    // console.log(flashcards);
+
+    if (!flashcards.length) {
       return res.status(404).json({
         success: false,
         message: "No flashcard collection found for this user",
@@ -223,7 +235,7 @@ const flashcard_show = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      flashcards: flashcards.slice(0, limit),
+      flashcards: flashcards,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
