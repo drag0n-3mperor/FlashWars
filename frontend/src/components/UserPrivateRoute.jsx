@@ -11,7 +11,7 @@ const UserPrivateRoute = ({ children }) => {
   return isAuthenticated ? (
     children
   ) : (
-    <Navigate to="/home#login-register-form-container" />
+    <Navigate to="/auth" />
   );
 };
 

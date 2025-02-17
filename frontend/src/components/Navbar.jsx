@@ -18,10 +18,13 @@ export function Navbar() {
   }, [location]);
 
   useEffect(() => {
-    if (showSearch && searchInputRef.current) {
+    if (
+      (showSearch && searchInputRef.current) ||
+      (menuOpen && searchInputRef.current)
+    ) {
       searchInputRef.current.focus();
     }
-  }, [showSearch]);
+  }, [showSearch, menuOpen]);
 
   const handleLogout = async () => {
     try {
@@ -51,9 +54,9 @@ export function Navbar() {
     // Clean up the event listener on unmount
     return () => mediaQuery.removeEventListener("change", handleResize);
   }, []);
-const handleSearch = (searchQuery)=>{
-  navigate(`/search-flashcards/${searchQuery}`);
-}
+  const handleSearch = (searchQuery) => {
+    navigate(`/search-flashcards/${searchQuery}`);
+  };
   return (
     <div className="relative w-full z-50">
       {/* Navbar */}
@@ -193,14 +196,21 @@ const handleSearch = (searchQuery)=>{
             </Link>
           )}
           {/* Search Field */}
-          <input
-            ref={searchInputRef}
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-gray-100 p-2 border border-gray-300 rounded-md focus:outline-none"
-          />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault(); // Prevent page reload
+              handleSearch(searchQuery);
+            }}
+          >
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-gray-100 p-2 border border-gray-300 rounded-md focus:outline-none"
+            />
+          </form>
         </div>
       )}
     </div>
