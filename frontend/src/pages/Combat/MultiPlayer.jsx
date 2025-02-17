@@ -160,7 +160,7 @@ export function MultiPlayer() {
   ) : (
     <div
       id="multiplayer-container"
-      className="flex flex-col items-center gap-4 w-full min-h-screen"
+      className="flex flex-wrap items-center gap-4 w-full min-h-screen"
     >
       {playing && (
         <div className="relative flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg">
@@ -168,8 +168,8 @@ export function MultiPlayer() {
         </div>
       )}
       {joining || playing ? (
-        <div>
-          <div className="flex items-start justify-center gap-8 p-4">
+        <div className="flex flex-wrap w-full justify-center sm:flex-row sm:gap-8 md:gap-12">
+          <div className="flex flex-wrap w-full items-start justify-center gap-8 p-4">
             {/* First Card */}
             <div className="flex flex-col items-center justify-start w-full max-w-md p-6 bg-gradient-to-r from-[#fbe6a2] via-[#f4d35e] to-[#f9a825] rounded-lg shadow-lg gap-6 border border-gray-200">
               {!loadingQuestions && (

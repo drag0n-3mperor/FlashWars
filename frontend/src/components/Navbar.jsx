@@ -168,30 +168,30 @@ export function Navbar() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="absolute left-0 top-full w-full bg-white shadow-md p-4 flex flex-col gap-4">
-          <Link to="/games" className="text-gray-800">
+          <Link to="/games" className="text-gray-800" onClick={()=>{setMenuOpen(!menuOpen)}}>
             Games
           </Link>
-          <Link to="/flashcards" className="text-gray-800">
+          <Link to="/flashcards" className="text-gray-800" onClick={()=>{setMenuOpen(!menuOpen)}}>
             Create
           </Link>
-          <Link to="/flashcards/view" className="text-gray-800">
+          <Link to="/flashcards/view" className="text-gray-800" onClick={()=>{setMenuOpen(!menuOpen)}}>
             View
           </Link>
-          <Link to="/flashcards/revise" className="text-gray-800">
+          <Link to="/flashcards/revise" className="text-gray-800" onClick={()=>{setMenuOpen(!menuOpen)}}>
             Revise
           </Link>
           {isAuthenticated ? (
             isProfilePage ? (
-              <button onClick={handleLogout} className="text-gray-800">
-                Logout
+              <button onClick={handleLogout} className="text-gray-800" >
+                Log Out
               </button>
             ) : (
-              <Link to="/profile" className="text-gray-800">
+              <Link to="/profile" className="text-gray-800" onClick={()=>{setMenuOpen(!menuOpen)}}>
                 Profile
               </Link>
             )
           ) : (
-            <Link to="/auth" className="text-gray-800">
+            <Link to="/auth" className="text-gray-800" onClick={()=>{setMenuOpen(!menuOpen)}}>
               Login
             </Link>
           )}
