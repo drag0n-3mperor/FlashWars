@@ -34,7 +34,7 @@ export function ShowWinner({
       {you && opponent ? (
         <>
           {/* Winner Section */}
-          <div className="flex flex-col items-center mb-8 bg-green-400 p-6 rounded-xl shadow-lg shadow-green-500/50 animate-pulse">
+          <div className="flex flex-col w-sm items-center mb-8 bg-green-400 p-6 rounded-xl shadow-lg shadow-green-500/50 animate-pulse">
             {winner!=="null" ? (
               <>
                 <img
@@ -46,10 +46,10 @@ export function ShowWinner({
                   alt={`${winner}'s avatar`}
                   className="w-32 h-32 rounded-full border-4 border-white shadow-xl"
                 />
-                <h2 className="text-5xl font-extrabold text-white drop-shadow-md animate-bounce mt-4">
+                <h2 className="text-2xl md:text-5xl font-extrabold text-white drop-shadow-md animate-bounce mt-4">
                   🎉 {winner} 🎉
                 </h2>
-                <p className="text-2xl text-gray-800 mt-2 italic">
+                <p className="text-xl md:text-2xl text-gray-800 mt-2 italic">
                   is the winner!
                 </p>
               </>
@@ -61,9 +61,9 @@ export function ShowWinner({
           </div>
 
           {/* Profiles Section */}
-          <div className="flex justify-between w-full space-x-4">
+          <div className="flex flex-wrap flex-row justify-evenly w-full gap-8">
             {/* Your Profile Section */}
-            <div className="flex flex-col items-center w-1/2 p-4 bg-indigo-800 rounded-xl shadow-lg">
+            <div className="flex flex-col items-center w-sm p-4 bg-indigo-800 rounded-xl shadow-lg">
               <img
                 src={you.avatar || "https://via.placeholder.com/150"}
                 alt={`${you.username}'s avatar`}
@@ -76,7 +76,7 @@ export function ShowWinner({
             </div>
 
             {/* Opponent Profile Section */}
-            <div className="flex flex-col items-center w-1/2 p-4 bg-indigo-800 rounded-xl shadow-lg">
+            <div className="flex flex-col items-center w-sm p-4 bg-indigo-800 rounded-xl shadow-lg">
               <img
                 src={opponent.avatar || "https://via.placeholder.com/150"}
                 alt={`${opponent.username}'s avatar`}

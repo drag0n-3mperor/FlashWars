@@ -41,8 +41,8 @@ export function Animation() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 font-roboto">
-      <div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-8 max-w-screen-md w-[70%]">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-12 sm:mb-4 font-roboto md:p-32">
+      <div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-8 max-w-screen-md">
         <div className="w-full text-center lg:text-left mb-8 lg:mb-0">
           <h1 className="text-4xl font-extrabold mb-4 text-black">
             The easiest way to make and study flashcards
@@ -59,7 +59,7 @@ export function Animation() {
                 <i className="fas fa-layer-group"></i>
               </div>
               <div>
-                <p className="font-bold">Revise before exams</p>
+                <p className="font-bold text-left">Revise before exams</p>
                 <p className="text-gray-600">In an assuredly easy way</p>
               </div>
             </div>
@@ -68,7 +68,7 @@ export function Animation() {
                 <i className="fas fa-user-graduate"></i>
               </div>
               <div>
-                <p className="font-bold">90% of students</p>
+                <p className="font-bold text-left">90% of students</p>
                 <p className="text-gray-600">
                   who use FlashWars report receiving higher grades
                 </p>
@@ -79,8 +79,10 @@ export function Animation() {
                 <i className="fas fa-chart-line"></i>
               </div>
               <div>
-                <p className="font-bold">Play games</p>
-                <p className="text-gray-600">in both single and multiplayer mode</p>
+                <p className="font-bold text-left">Play games</p>
+                <p className="text-gray-600">
+                  in both single and multiplayer mode
+                </p>
               </div>
             </div>
           </div>

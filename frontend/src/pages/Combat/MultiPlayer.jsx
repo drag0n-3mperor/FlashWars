@@ -160,10 +160,10 @@ export function MultiPlayer() {
   ) : (
     <div
       id="multiplayer-container"
-      className="flex flex-wrap items-center gap-4 w-full min-h-screen"
+      className="flex flex-wrap items-center justify-center gap-4 w-full min-h-screen"
     >
       {playing && (
-        <div className="relative flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg">
+        <div className="relative flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg mt-4">
           <span className="text-2xl font-bold text-white">Time: {timer}s</span>
         </div>
       )}
