@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   // State for the contact form
@@ -57,11 +58,26 @@ const Footer = () => {
                 Quick Link
               </h2>
               <ul className="space-y-1 text-xs sm:text-sm">
-                <li>Create Flashcard</li>
-                <li>View All Flashcards</li>
-                <li>Revise</li>
-                <li>Combat</li>
-                <li>Profile</li>
+                <li>
+                  <Link to="/flashcards" className="text-white">
+                    Create Flashcard
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/flashcards/view" className="text-white">
+                    View All Flashcards
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/flashcards/revise" className="text-white">
+                    Revise
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/games" className="text-white">
+                    Combat
+                  </Link>
+                </li>
               </ul>
             </div>
 

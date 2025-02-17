@@ -59,8 +59,8 @@ export function Animation() {
                 <i className="fas fa-layer-group"></i>
               </div>
               <div>
-                <p className="font-bold">Over 500 million</p>
-                <p className="text-gray-600">flashcards created</p>
+                <p className="font-bold">Revise before exams</p>
+                <p className="text-gray-600">In an assuredly easy way</p>
               </div>
             </div>
             <div className="flex items-center">
@@ -79,8 +79,8 @@ export function Animation() {
                 <i className="fas fa-chart-line"></i>
               </div>
               <div>
-                <p className="font-bold">The most popular</p>
-                <p className="text-gray-600">online learning tool in the US</p>
+                <p className="font-bold">Play games</p>
+                <p className="text-gray-600">in both single and multiplayer mode</p>
               </div>
             </div>
           </div>
