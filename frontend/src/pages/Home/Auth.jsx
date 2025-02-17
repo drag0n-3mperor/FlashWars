@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
+import { LoaderComponent } from "../../components/LoaderComponent";
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const { isAuthenticated, setIsAuthenticated, setUser, user } = useAuth();
@@ -143,7 +143,7 @@ export default function Auth() {
         message: "OTP must be 6 digits",
       });
     }
-    
+
     setLoading(true);
     try {
       const response = await axios.post(
@@ -155,7 +155,7 @@ export default function Auth() {
       if (response.status === 201) {
         // console.log("OTP verified successfully");
         setIsAuthenticated(true); // Update authentication state
-        navigate("/users/profile");
+        navigate("/profile");
       } else {
         setOtpMsg({
           success: false,
@@ -181,6 +181,14 @@ export default function Auth() {
       setOtpMsg(null);
     }
   }, [loading]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen w-screen">
+        <LoaderComponent />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -296,7 +304,7 @@ export default function Auth() {
                   {!registerInitiated ? (
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <input
-                        {...register("fullName", {
+                        {...register("fullname", {
                           required: "Full name is required",
                         })}
                         type="text"
