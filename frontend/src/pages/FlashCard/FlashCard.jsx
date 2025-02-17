@@ -3,31 +3,34 @@ import { FlashcardCollectionCard } from "../../components/FlashcardCollectionCar
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { LoaderComponent } from "../../components/LoaderComponent.jsx"; // Import loader component
 
 export const FlashCard = () => {
   const [flashcardCollections, setFlashcardCollections] = useState([]);
+  const [loader, setLoader] = useState(false); // Add loader state
 
   useEffect(() => {
     const fetchFlashcards = async () => {
+      setLoader(true); // Show loader before fetching
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/flashcards/view`,
           { withCredentials: true }
         );
-        console.log(res.data);
         if (res.status === 200) {
           setFlashcardCollections(res.data.collections);
         }
       } catch (error) {
         console.log(error);
       }
+      setLoader(false); // Hide loader after fetching
     };
 
     fetchFlashcards();
   }, []);
 
   return (
-    <div className="flex max-w-4xl bg-white mx-auto flex-col min-h-screen m-8" style={{borderRadius: "1rem"}}>
+    <div className="flex max-w-4xl bg-white mx-auto flex-col min-h-screen m-8" style={{ borderRadius: "1rem" }}>
       {/* Create Flashcard Section */}
       <CreateFlashcard flashcardCollections={flashcardCollections} />
 
@@ -46,7 +49,11 @@ export const FlashCard = () => {
 
       {/* Flashcard Grid */}
       <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {flashcardCollections.length > 0 ? (
+        {loader ? (
+          <div className="flex justify-center items-center col-span-full">
+            <LoaderComponent /> {/* Display loader while fetching */}
+          </div>
+        ) : flashcardCollections.length > 0 ? (
           flashcardCollections.slice(0, 6).map((flashcard, index) => (
             <FlashcardCollectionCard flashcard={flashcard} key={index} />
           ))

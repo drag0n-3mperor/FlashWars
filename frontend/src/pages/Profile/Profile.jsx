@@ -3,13 +3,16 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { FlashcardCollectionCard } from "../../components/FlashcardCollectionCard.jsx";
 import { Link } from "react-router-dom";
+import { LoaderComponent } from "../../components/LoaderComponent.jsx"; // Import your loader component
 
 const Profile = () => {
   const { user } = useAuth();
   const [flashcardCollections, setFlashcardCollections] = useState([]);
+  const [loader, setLoader] = useState(false); // Add loader state
 
   useEffect(() => {
     const fetchFlashcards = async () => {
+      setLoader(true); // Show loader before fetching
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/flashcards/view`,
@@ -21,6 +24,7 @@ const Profile = () => {
       } catch (error) {
         console.log(error);
       }
+      setLoader(false); // Hide loader after fetching
     };
 
     fetchFlashcards();
@@ -29,7 +33,7 @@ const Profile = () => {
   return (
     <div className="max-w-4xl mx-auto mt-6 mb-6 bg-white shadow-lg rounded-2xl overflow-hidden">
       {/* Profile Section */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 animate-shimmer  to-indigo-600 p-6 rounded-t-2xl">
+      <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 animate-shimmer to-indigo-600 p-6 rounded-t-2xl">
         <div className="flex items-center">
           <img
             src={user?.avatar || "/assets/DEFAULT_AVATAR.jpg"}
@@ -45,7 +49,11 @@ const Profile = () => {
               {user?.username || "Username"}
             </h2>
             <div className="flex items-center mt-1">
-              <span className={`${user?.rating ? "text-yellow-300 text-lg font-bold" : "text-gray-300"}`}>
+              <span
+                className={`${
+                  user?.rating ? "text-yellow-300 text-lg font-bold" : "text-gray-300"
+                }`}
+              >
                 {user?.rating ? `${user.rating}` : "Unrated"}
               </span>
             </div>
@@ -68,7 +76,11 @@ const Profile = () => {
 
       {/* Flashcard Grid */}
       <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {flashcardCollections.length > 0 ? (
+        {loader ? (
+          <div className="flex justify-center items-center col-span-full">
+            <LoaderComponent /> {/* Display loader while fetching */}
+          </div>
+        ) : flashcardCollections.length > 0 ? (
           flashcardCollections.slice(0, 6).map((flashcard, index) => (
             <FlashcardCollectionCard flashcard={flashcard} key={index} />
           ))
