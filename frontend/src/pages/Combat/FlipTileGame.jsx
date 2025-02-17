@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { LoaderComponent } from "../../components/LoaderComponent";
 
 export default function FlipTileGame() {
   const [tiles, setTiles] = useState([]);
@@ -11,17 +12,19 @@ export default function FlipTileGame() {
   const [hoverIndex, setHoverIndex] = useState(null);
   const [questionMap, setQuestionMap] = useState(new Map());
   const [play, setPlay] = useState(false);
+  const [loading, setLoading] = useState(false);
   const timerId = useRef();
 
   useEffect(() => {
     if (!play) return;
 
     const fetchData = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/flashcards/show/`,
           {
-            params: { limit: 2, answerOnly: true },
+            params: { limit: 8, answerOnly: true },
             withCredentials: true,
           }
         );
@@ -43,6 +46,7 @@ export default function FlipTileGame() {
       } catch (e) {
         console.error(e);
       }
+      setLoading(false);
     };
 
     fetchData();
@@ -101,7 +105,11 @@ export default function FlipTileGame() {
         >
           Play
         </motion.button>
-      ) : (
+      ) : loading ? (
+        <div>
+          <LoaderComponent />{" "}
+        </div>
+      ) : tiles.length ? (
         <div className="flex flex-col items-center gap-6">
           <div className="flex justify-between w-full max-w-md text-xl font-bold text-white">
             <div>
@@ -150,6 +158,12 @@ export default function FlipTileGame() {
               </motion.div>
             ))}
           </div>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+          <h1 className="text-3xl md:text-5xl font-bold text-gray-700 text-center bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">
+            There Is No QnA Flashcards Yet
+          </h1>
         </div>
       )}
     </div>

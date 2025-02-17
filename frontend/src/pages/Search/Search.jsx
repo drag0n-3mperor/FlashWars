@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FlashcardCollectionCard } from "../../components/FlashcardCollectionCard";
-
+import { LoaderComponent } from "../../components/LoaderComponent"
 export function Search() {
   const { searchQuery } = useParams(); // Correctly access searchQuery
   const [users, setUsers] = useState([]);
@@ -44,9 +44,7 @@ export function Search() {
           </div>
         ))
       ) : (
-        <h2 className="text-gray-500 text-xl font-semibold text-center">
-          No collections found for your search...
-        </h2>
+        <div><LoaderComponent/></div>
       )}
     </div>
   );
