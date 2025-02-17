@@ -260,6 +260,8 @@ const flashcard_view_all = async (req, res) => {
       Promise.resolve({})
     );
 
+    console.log(collections);
+
     res.status(200).json({
       success: true,
       collections: flashcardCollections,
@@ -281,7 +283,9 @@ const flashcard_view_of_collection = async (req, res) => {
     //     .json({ success: false, message: "Unauthorized: User ID missing" });
     // }
     const flashcards = await Flashcard.find({ flashcardCollectionId });
-    const collection = await FlashcardCollection.findById(flashcardCollectionId);
+    const collection = await FlashcardCollection.findById(
+      flashcardCollectionId
+    );
     if (!flashcards) {
       return res.status(404).json({
         success: false,
