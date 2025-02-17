@@ -168,67 +168,98 @@ const user_login = async (req, res) => {
 
 const refresh_access_token = async (req, res) => {
   try {
-    const refreshToken = req.cookies?.refreshToken;
-    console.log("Refresh Token from cookies:", refreshToken);
+    let accessToken = req.cookies?.accessToken;
+    let refreshToken = req.cookies?.refreshToken;
 
-    if (!refreshToken) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized! No refresh token." });
+    // Check for missing tokens
+    if (!accessToken && !refreshToken) {
+      return res.status(401).json({ message: "Unauthorized! No tokens provided." });
     }
 
-    // Verify the refresh token
     let decoded;
     try {
-      decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET);
-      console.log("Decoded JWT:", decoded);
+      // Try verifying the access token
+      decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET);
     } catch (err) {
-      console.log("JWT Verification Error:", err.message);
+      console.log("Access token invalid. Attempting to verify refresh token...");
+
+      // Access token invalid, attempt refresh
+      if (!refreshToken) {
+        return res.status(401).json({ message: "Unauthorized! No refresh token provided." });
+      }
+
+      try {
+        decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET);
+      } catch (refreshError) {
+        console.log("Refresh token invalid or expired:", refreshError.message);
+        return res
+          .status(403)
+          .clearCookie("refreshToken", { httpOnly: true, sameSite: "None", secure: true })
+          .clearCookie("accessToken", { httpOnly: true, sameSite: "None", secure: true })
+          .json({ message: "Invalid or expired refresh token!" });
+      }
+    }
+
+    // User ID from decoded token
+    const userId = decoded._id;
+
+    // Fetch the user from the database
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(403).json({ message: "Invalid user!" });
+    }
+
+    // Check if the refresh token matches
+    if (user.refreshToken !== refreshToken) {
       return res
         .status(403)
-        .json({ message: "Invalid or expired refresh token!" });
+        .clearCookie("refreshToken", { httpOnly: true, sameSite: "None", secure: true })
+        .clearCookie("accessToken", { httpOnly: true, sameSite: "None", secure: true })
+        .json({ message: "Invalid refresh token!" });
     }
 
-    // Find the user in the database
-    const user = await User.findById(decoded._id);
-    if (!user) {
-      console.log("User not found");
-      return res.status(403).json({ message: "Invalid refresh token!" });
+    // Optional: Only generate new tokens if close to expiry
+    const isTokenExpiringSoon = (token) => {
+      const expiration = jwt.decode(token).exp * 1000;
+      const now = Date.now();
+      return expiration - now < 5 * 60 * 1000; // 5-minute threshold
+    };
+
+    // Regenerate tokens if necessary
+    if (isTokenExpiringSoon(refreshToken)) {
+      refreshToken = user.generateRefreshToken();
+      user.refreshToken = refreshToken;
+      await user.save();
     }
 
-    // Check if the refresh token matches the one stored in the database
-    if (user.refreshToken !== refreshToken) {
-      console.log("Token Mismatch! Stored Refresh Token:", user.refreshToken);
-      return res.status(403).json({ message: "Invalid refresh token!" });
-    }
+    // Always generate a new access token
+    accessToken = user.generateAccessToken();
 
-    // Generate a new access token
-    const accessToken = user.generateAccessToken();
-    console.log("New Access Token Generated");
     const refreshTokenExpiry = ms(process.env.JWT_REFRESH_TOKEN_EXPIRY);
     const accessTokenExpiry = ms(process.env.JWT_ACCESS_TOKEN_EXPIRY);
 
-    // Send the new access token
-    res
+    // Set the cookies with the new tokens
+    return res
       .status(200)
       .cookie("refreshToken", refreshToken, {
-        httpOnly: true, // Prevent access to the cookie via JavaScript
-        sameSite: "None", // Allows multisite request
+        httpOnly: true,
+        sameSite: "None",
         secure: true,
-        maxAge: refreshTokenExpiry, // 10d expiry from .env
+        maxAge: refreshTokenExpiry,
       })
       .cookie("accessToken", accessToken, {
-        httpOnly: true, // Prevent access to the cookie via JavaScript
-        sameSite: "None", // Allows multisite request
+        httpOnly: true,
+        sameSite: "None",
         secure: true,
-        maxAge: accessTokenExpiry, // 10d expiry from .env
+        maxAge: accessTokenExpiry,
       })
-      .json({ accessToken });
+      .json({ message: "Auto signed-in successfully" });
   } catch (error) {
     console.log("Error refreshing access token:", error.message);
-    res.status(403).json({ message: "Invalid or expired refresh token!" });
+    return res.status(403).json({ message: "Invalid or expired refresh token!" });
   }
 };
+
 
 const logout_user = async (req, res) => {
   try {
@@ -239,12 +270,12 @@ const logout_user = async (req, res) => {
 
     return res
       .status(201)
-      .clearCookie("refreshToken" , {
+      .clearCookie("refreshToken", {
         httpOnly: true, // Prevent access to the cookie via JavaScript
         sameSite: "None", // Allows multisite request
         secure: true,
       })
-      .clearCookie("accessToken" , {
+      .clearCookie("accessToken", {
         httpOnly: true, // Prevent access to the cookie via JavaScript
         sameSite: "None", // Allows multisite request
         secure: true,
